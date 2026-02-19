@@ -1,0 +1,103 @@
+'use client';
+
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { createSupabaseClient } from '@/lib/supabase/client';
+
+type UserProfile = {
+    id: string;
+    role: 'admin' | 'customer';
+};
+
+type AuthContextType = {
+    user: UserProfile | null;
+    loading: boolean;
+};
+
+const AuthContext = createContext<AuthContextType>({
+    user: null,
+    loading: true,
+});
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+    const [user, setUser] = useState<UserProfile | null>(null);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
+
+    // 👇 instancia del cliente
+    const supabase = createSupabaseClient();
+
+    useEffect(() => {
+        const loadUser = async () => {
+            // Intentar obtener sesión actual
+            const { data: { session }, error } = await supabase.auth.getSession();
+            const user = session?.user;
+
+            if (user) {
+                console.log("AuthContext: Sesión activa detectada:", user.email);
+
+                const { data: profile, error: profileError } = await supabase
+                    .from('profiles')
+                    .select('id, role')
+                    .eq('id', user.id)
+                    .single();
+
+                if (profile) {
+                    setUser(profile);
+                    // Redirección basada en Rol si venimos de un login
+                    if (profile.role === 'admin' && window.location.pathname.startsWith('/auth')) {
+                        router.push('/admin');
+                    } else if (window.location.pathname.startsWith('/auth')) {
+                        router.push('/');
+                    }
+                } else {
+                    console.warn("AuthContext: Usuario sin perfil, usando fallback.");
+                    setUser({ id: user.id, role: 'customer' });
+                    if (window.location.pathname.startsWith('/auth')) router.push('/');
+                }
+            } else {
+                console.log("AuthContext: No hay sesión activa.");
+                setUser(null);
+            }
+            setLoading(false);
+        };
+
+        loadUser();
+
+        // Escuchar cambios de estado (login, logout, refresh)
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            console.log("AuthContext: Cambio de estado auth:", event);
+            if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+                const user = session?.user;
+                if (user) {
+                    // Lógica repetida para asegurar redirección en casos de evento
+                    supabase.from('profiles').select('role').eq('id', user.id).single()
+                        .then(({ data: profile }) => {
+                            if (profile?.role === 'admin' && window.location.pathname.startsWith('/auth')) {
+                                router.push('/admin');
+                            }
+                        });
+                    loadUser();
+                }
+            } else if (event === 'SIGNED_OUT') {
+                setUser(null);
+                setLoading(false);
+                router.refresh();
+            } else if (event === 'PASSWORD_RECOVERY') {
+                router.push('/auth/reset-password');
+            }
+        });
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
+
+    return (
+        <AuthContext.Provider value={{ user, loading }}>
+            {children}
+        </AuthContext.Provider>
+    );
+}
+
+export const useAuth = () => useContext(AuthContext);

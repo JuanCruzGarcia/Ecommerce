@@ -107,186 +107,230 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 xl:gap-20 items-start">
-            {/* Gallery Section */}
-            <div className="space-y-6">
-                <div className="aspect-[4/5] bg-gray-100 rounded-3xl overflow-hidden relative group shadow-sm ring-1 ring-black/5">
-                    <img
-                        src={allImages[currentImageIndex]}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-
-                    {allImages.length > 1 && (
-                        <div className="absolute inset-0 flex items-center justify-between p-4 pointer-events-none">
-                            <button
-                                onClick={() => setCurrentImageIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1))}
-                                className="pointer-events-auto bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:scale-110 -translate-x-4 group-hover:translate-x-0"
-                            >
-                                <ChevronLeft className="w-5 h-5 text-gray-900" />
-                            </button>
-                            <button
-                                onClick={() => setCurrentImageIndex(prev => (prev === allImages.length - 1 ? 0 : prev + 1))}
-                                className="pointer-events-auto bg-white/90 backdrop-blur-sm p-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-all hover:bg-white hover:scale-110 translate-x-4 group-hover:translate-x-0"
-                            >
-                                <ChevronRight className="w-5 h-5 text-gray-900" />
-                            </button>
-                        </div>
-                    )}
-                </div>
-
-                {/* Thumbnails */}
-                {allImages.length > 1 && (
-                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-                        {allImages.map((img, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => setCurrentImageIndex(idx)}
-                                className={`
-                                    relative flex-shrink-0 w-20 h-24 rounded-xl overflow-hidden border-2 transition-all duration-300
-                                    ${currentImageIndex === idx
-                                        ? 'border-gray-900 ring-2 ring-gray-900/10 ring-offset-2'
-                                        : 'border-transparent opacity-70 hover:opacity-100'
-                                    }
-                                `}
-                            >
-                                <img src={img} className="w-full h-full object-cover" alt={`Thumbnail ${idx + 1}`} />
-                            </button>
-                        ))}
-                    </div>
+        <div className="min-h-screen bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 font-display">
+            {/* Breadcrumbs */}
+            <nav className="flex items-center gap-3 text-sm font-medium text-slate-500 dark:text-slate-400 mb-10 overflow-x-auto overflow-y-hidden no-scrollbar whitespace-nowrap scroll-smooth py-1">
+                <a className="hover:text-primary transition-colors shrink-0" href="/">Inicio</a>
+                <span className="material-symbols-outlined text-xs shrink-0 select-none">chevron_right</span>
+                {product.categories?.[0] && (
+                    <>
+                        <a className="hover:text-primary transition-colors shrink-0" href={`/category/${product.categories[0].name.toLowerCase()}`}>{product.categories[0].name}</a>
+                        <span className="material-symbols-outlined text-xs shrink-0 select-none">chevron_right</span>
+                    </>
                 )}
-            </div>
+                <span className="text-slate-900 dark:text-slate-100 truncate">{product.name}</span>
+            </nav>
 
-            {/* Info Section */}
-            <div className="flex flex-col pt-2 lg:pt-0">
-                <div className="mb-8 border-b border-gray-100 pb-8">
-                    {product.categories?.[0] && (
-                        <span className="text-sm font-semibold text-blue-600 tracking-wider uppercase mb-3 block">
-                            {product.categories[0].name}
-                        </span>
-                    )}
-                    <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight leading-tight">
-                        {product.name}
-                    </h1>
-
-                    <div className="flex items-center gap-6 mt-6">
-                        <span className="text-3xl font-bold text-gray-900">
-                            ${currentPrice.toLocaleString('es-AR')}
-                        </span>
-                        {isOutOfStock ? (
-                            <span className="px-3 py-1 bg-red-100 text-red-700 text-sm font-bold rounded-full uppercase tracking-wide">
-                                Sin Stock
-                            </span>
-                        ) : (
-                            <div className="flex items-center text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                                <span className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-                                <span className="text-sm font-medium">Stock disponible</span>
+            {/* Product Grid 60/40 */}
+            <div className="grid grid-cols-1 lg:grid-cols-10 gap-16">
+                
+                {/* Left Column: Gallery (60%) */}
+                <div className="lg:col-span-6 space-y-8">
+                    <div className="relative group aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-white dark:bg-slate-800/50 border border-primary/10 shadow-2xl transition-all duration-500">
+                        <img 
+                            src={allImages[currentImageIndex]} 
+                            alt={product.name}
+                            className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        />
+                        
+                        {/* Glassmorphism Navigation */}
+                        {allImages.length > 1 && (
+                            <div className="absolute inset-x-6 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                <button 
+                                    onClick={() => setCurrentImageIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1))}
+                                    className="w-14 h-14 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-white hover:bg-white/40 transition-all hover:scale-110 shadow-2xl"
+                                >
+                                    <span className="material-symbols-outlined text-3xl">chevron_left</span>
+                                </button>
+                                <button 
+                                    onClick={() => setCurrentImageIndex(prev => (prev === allImages.length - 1 ? 0 : prev + 1))}
+                                    className="w-14 h-14 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/30 text-white hover:bg-white/40 transition-all hover:scale-110 shadow-2xl"
+                                >
+                                    <span className="material-symbols-outlined text-3xl">chevron_right</span>
+                                </button>
                             </div>
                         )}
+
+                        {/* Zoom/Expand info */}
+                        <div className="absolute bottom-8 right-8">
+                             <div className="bg-black/40 backdrop-blur-md text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-white/10">
+                                Vista Premium
+                             </div>
+                        </div>
                     </div>
-                </div>
 
-                <div className="prose prose-lg text-gray-600 mb-10 leading-relaxed">
-                    <p>{product.description}</p>
-                </div>
-
-                {/* Controls Section using a lighter styling container */}
-                <div className="bg-white rounded-2xl space-y-8">
-                    {/* Variants Selector */}
-                    {hasVariants && (
-                        <div className="space-y-6">
-                            {product.variants.map((variantOption: any, idx: number) => (
-                                <div key={idx}>
-                                    <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
-                                        {variantOption.name}: <span className="text-gray-500 font-normal normal-case ml-2">{selectedAttributes[variantOption.name]}</span>
-                                    </h3>
-                                    <div className="flex flex-wrap gap-3">
-                                        {variantOption.values.map((val: string) => {
-                                            const isSelected = selectedAttributes[variantOption.name] === val;
-                                            return (
-                                                <button
-                                                    key={val}
-                                                    onClick={() => handleAttributeSelect(variantOption.name, val)}
-                                                    className={`
-                                                        min-w-[4rem] px-5 py-2.5 rounded-full text-sm font-medium border transition-all duration-200
-                                                        ${isSelected
-                                                            ? 'border-gray-900 bg-gray-900 text-white shadow-lg shadow-gray-900/20 transform scale-105'
-                                                            : 'border-gray-200 text-gray-700 hover:border-gray-400 hover:bg-gray-50'
-                                                        }
-                                                    `}
-                                                >
-                                                    {val}
-                                                </button>
-                                            );
-                                        })}
+                    {/* Thumbnail Strip */}
+                    {allImages.length > 1 && (
+                        <div className="flex gap-4 overflow-x-auto overflow-y-hidden pb-4 no-scrollbar scroll-smooth">
+                            {allImages.map((img, idx) => (
+                                <button 
+                                    key={idx}
+                                    onClick={() => setCurrentImageIndex(idx)}
+                                    className={`flex-shrink-0 w-28 h-32 rounded-2xl p-0.5 transition-all duration-300 transform ${currentImageIndex === idx ? 'bg-gradient-to-tr from-primary to-accent-blue scale-105 shadow-lg shadow-primary/20' : 'bg-transparent border border-primary/10 hover:border-primary/40 hover:scale-105'}`}
+                                >
+                                    <div className="w-full h-full rounded-[0.85rem] overflow-hidden bg-white">
+                                        <img src={img} className="w-full h-full object-cover" alt={`Thumb ${idx}`} />
                                     </div>
-                                </div>
+                                </button>
                             ))}
                         </div>
                     )}
+                </div>
 
-                    {/* Stock & Quantity */}
-                    {!isOutOfStock && (
-                        <div className="pt-6 border-t border-gray-100">
-                            <div className="flex flex-col sm:flex-row gap-6">
-                                {/* Quantity Selector */}
-                                <div className="w-full sm:w-auto">
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Cantidad</label>
-                                    <div className="flex items-center border border-gray-300 rounded-full w-fit">
-                                        <button
-                                            onClick={decreaseQuantity}
-                                            disabled={quantity <= 1}
-                                            className="p-3 hover:bg-gray-100 rounded-l-full disabled:opacity-50 transition-colors"
-                                        >
-                                            <Minus className="w-4 h-4" />
-                                        </button>
-                                        <span className="w-12 text-center font-medium tabular-nums">{quantity}</span>
-                                        <button
-                                            onClick={increaseQuantity}
-                                            disabled={quantity >= currentStock}
-                                            className="p-3 hover:bg-gray-100 rounded-r-full disabled:opacity-50 transition-colors"
-                                        >
-                                            <Plus className="w-4 h-4" />
-                                        </button>
-                                    </div>
-                                </div>
-
-                                {/* Add to Cart Button */}
-                                <div className="flex-1">
-                                    <label className="block text-sm font-medium text-transparent mb-2 select-none">Action</label>
-                                    <button
-                                        onClick={handleAddToCart}
-                                        disabled={isOutOfStock || (hasVariants && !selectedVariant) || isAdding}
-                                        className={`
-                                             w-full py-3.5 px-6 rounded-full font-bold text-base flex items-center justify-center gap-3 transition-all duration-300
-                                             ${isOutOfStock || (hasVariants && !selectedVariant)
-                                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                                                : 'bg-black text-white hover:bg-gray-800 hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0'
-                                            }
-                                         `}
-                                    >
-                                        {isAdding ? (
-                                            <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                        ) : (
-                                            <>
-                                                <ShoppingBag className="w-5 h-5" />
-                                                {hasVariants && !selectedVariant
-                                                    ? 'Selecciona opciones'
-                                                    : 'Agregar al Carrito'}
-                                            </>
-                                        )}
-                                    </button>
-                                </div>
+                {/* Right Column: Details (40%) */}
+                <div className="lg:col-span-4 flex flex-col space-y-10">
+                    <div>
+                        <div className="mb-4">
+                            <span className="inline-block px-4 py-1.5 text-[10px] font-black tracking-[0.2em] uppercase rounded-full bg-primary/10 text-primary border border-primary/20">
+                                {product.categories?.[0]?.name || 'Colección Exclusiva'}
+                            </span>
+                        </div>
+                        <h1 className="text-4xl lg:text-6xl font-black leading-[1.1] mb-6 text-slate-900 dark:text-white tracking-tighter">
+                            {product.name}
+                        </h1>
+                        
+                        <div className="flex items-center gap-4 mb-4">
+                            <div className="flex items-center gap-2 px-4 py-1.5 bg-green-500/10 border border-green-500/20 rounded-full">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span className="text-xs font-black text-green-600 dark:text-green-400 uppercase tracking-wider">{isOutOfStock ? 'Sin Stock' : 'Stock disponible'}</span>
                             </div>
+                            <div className="flex items-center gap-1.5 text-amber-500 bg-amber-500/10 px-4 py-1.5 rounded-full border border-amber-500/10">
+                                <span className="material-symbols-outlined text-lg fill-amber-500">star</span>
+                                <span className="text-sm font-black">4.9</span>
+                                <span className="text-slate-400 text-[10px] font-bold">(128 reseñas)</span>
+                            </div>
+                        </div>
+                    </div>
 
-                            {hasVariants && selectedVariant && (
-                                <p className="mt-4 text-sm text-gray-500 flex items-center gap-2">
-                                    <Check className="w-4 h-4 text-green-500" />
-                                    Stock disponible: <span className="font-medium text-gray-900">{selectedVariant.stock}</span> unidades
-                                </p>
+                    <div className="bg-slate-50 dark:bg-slate-800/20 p-8 rounded-[2rem] border border-primary/5">
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-[0.2em] mb-2">Precio de lanzamiento</p>
+                        <div className="flex items-baseline gap-4 mb-2">
+                            <span className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">
+                                ${currentPrice.toLocaleString('es-AR')}
+                            </span>
+                            {product.price > currentPrice && (
+                                <span className="text-xl text-slate-400 line-through font-bold opacity-50">${product.price.toLocaleString('es-AR')}</span>
                             )}
                         </div>
-                    )}
+                        <p className="text-sm text-primary font-bold flex items-center gap-2">
+                             <span className="material-symbols-outlined">credit_card</span>
+                             6 cuotas sin interés de ${(currentPrice / 6).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
+                        </p>
+                    </div>
+
+                    {/* Variant Selectors */}
+                    <div className="space-y-10">
+                        {hasVariants && product.variants.map((variantOption: any, idx: number) => (
+                            <div key={idx}>
+                                <div className="flex items-center justify-between mb-5">
+                                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">{variantOption.name}</h3>
+                                    {variantOption.name.toLowerCase() === 'talle' && (
+                                        <button className="text-[10px] font-black text-primary underline underline-offset-4 uppercase tracking-widest">Guía de talles</button>
+                                    )}
+                                </div>
+                                <div className="flex flex-wrap gap-3">
+                                    {variantOption.values.map((val: string) => {
+                                        const isSelected = selectedAttributes[variantOption.name] === val;
+                                        return (
+                                            <button
+                                                key={val}
+                                                onClick={() => handleAttributeSelect(variantOption.name, val)}
+                                                className={`px-8 py-3.5 rounded-2xl text-sm font-black transition-all duration-300 border-2 ${isSelected ? 'border-primary bg-primary/5 text-primary shadow-xl shadow-primary/10 scale-105' : 'border-slate-100 dark:border-white/5 bg-white dark:bg-white/5 text-slate-500 hover:border-primary/40 hover:text-primary'}`}
+                                            >
+                                                {val}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="space-y-4 pt-6">
+                        <div className="flex gap-4">
+                            <div className="flex items-center border-2 border-slate-100 dark:border-white/5 rounded-2xl bg-white dark:bg-white/5 px-2">
+                                <button 
+                                    onClick={decreaseQuantity}
+                                    className="w-12 h-14 flex items-center justify-center hover:text-primary transition-colors disabled:opacity-20"
+                                    disabled={quantity <= 1}
+                                >
+                                    <span className="material-symbols-outlined font-black">remove</span>
+                                </button>
+                                <span className="w-12 text-center font-black text-xl tabular-nums">{quantity}</span>
+                                <button 
+                                    onClick={increaseQuantity}
+                                    className="w-12 h-14 flex items-center justify-center hover:text-primary transition-colors disabled:opacity-20"
+                                    disabled={quantity >= currentStock}
+                                >
+                                    <span className="material-symbols-outlined font-black">add</span>
+                                </button>
+                            </div>
+                            <button 
+                                onClick={handleAddToCart}
+                                disabled={isAdding || isOutOfStock || (hasVariants && !selectedVariant)}
+                                className="flex-1 h-16 bg-gradient-to-r from-primary to-accent-blue text-white rounded-[1.25rem] font-black text-lg shadow-2xl shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:grayscale disabled:scale-100"
+                            >
+                                {isAdding ? (
+                                    <span className="w-6 h-6 border-4 border-white/30 border-t-white rounded-full animate-spin" />
+                                ) : (
+                                    <>
+                                        <span className="material-symbols-outlined text-2xl">shopping_cart</span>
+                                        {hasVariants && !selectedVariant ? 'Elegí opciones' : 'Agregar al Carrito'}
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Trust Icons */}
+                    <div className="grid grid-cols-2 gap-8 pt-10 border-t border-primary/10">
+                        <div className="flex items-center gap-4">
+                            <div className="size-14 rounded-2xl bg-primary/5 flex items-center justify-center text-primary border border-primary/10">
+                                <span className="material-symbols-outlined text-3xl">local_shipping</span>
+                            </div>
+                            <div>
+                                <p className="text-sm font-black uppercase tracking-tight">Envío Express</p>
+                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">En todo el país</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="size-14 rounded-2xl bg-accent-blue/5 flex items-center justify-center text-accent-blue border border-accent-blue/10">
+                                <span className="material-symbols-outlined text-3xl">verified_user</span>
+                            </div>
+                            <div>
+                                <p className="text-sm font-black uppercase tracking-tight">Garantía Real</p>
+                                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Pago 100% Seguro</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Extra info tabs */}
+            <div className="mt-32 border-t border-primary/10 pt-20 pb-20">
+                <div className="flex gap-12 border-b border-primary/5 mb-12">
+                    <button className="pb-6 border-b-4 border-primary font-black text-xl uppercase tracking-tighter">Descripción</button>
+                    <button className="pb-6 border-b-4 border-transparent text-slate-400 font-black text-xl uppercase tracking-tighter hover:text-slate-600 transition-colors">Especificaciones</button>
+                    <button className="pb-6 border-b-4 border-transparent text-slate-400 font-black text-xl uppercase tracking-tighter hover:text-slate-600 transition-colors">Opiniones</button>
+                </div>
+                <div className="max-w-4xl">
+                    <p className="text-xl text-slate-500 dark:text-slate-400 leading-relaxed font-medium mb-8">
+                        {product.description}
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                        <div className="p-8 bg-white dark:bg-slate-800/10 rounded-3xl border border-primary/5">
+                            <h4 className="font-black mb-4 uppercase tracking-[0.2em] text-xs text-primary">Calidad Artesanal</h4>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 font-bold">Cada pieza es inspeccionada manualmente para asegurar los estándares más altos de la industria.</p>
+                        </div>
+                        <div className="p-8 bg-white dark:bg-slate-800/10 rounded-3xl border border-primary/5">
+                            <h4 className="font-black mb-4 uppercase tracking-[0.2em] text-xs text-primary">Sostenibilidad</h4>
+                            <p className="text-sm text-slate-500 dark:text-slate-400 font-bold">Comprometidos con procesos de fabricación éticos y materiales de bajo impacto ambiental.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

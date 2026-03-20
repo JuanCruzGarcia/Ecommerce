@@ -39,16 +39,6 @@ export default function StoreHeader() {
                 </div>
 
                 <div className="flex items-center gap-6">
-                    {/* Search (visual for now) */}
-                    <div className="hidden md:flex items-center bg-primary/10 rounded-full px-4 py-2 border border-primary/20 w-64 group focus-within:w-80 transition-all duration-300">
-                        <span className="material-symbols-outlined text-slate-400 text-lg">search</span>
-                        <input 
-                            className="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-500 dark:text-white" 
-                            placeholder="Buscar productos..." 
-                            type="text"
-                        />
-                    </div>
-
                     <div className="flex items-center gap-4">
                         {/* Cart */}
                         <Link href="/cart" className="p-2 hover:bg-primary/10 rounded-full transition-colors relative group">

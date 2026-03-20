@@ -53,7 +53,7 @@ export default async function Home() {
           <div className="absolute inset-0 hero-gradient z-0"></div>
           <div className="absolute -top-40 -right-40 size-[600px] bg-primary/20 blur-[120px] rounded-full"></div>
           <div className="absolute -bottom-40 -left-40 size-[600px] bg-blue-500/10 blur-[120px] rounded-full"></div>
-          
+
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-8">
               <span className="size-2 rounded-full bg-primary animate-pulse"></span>
@@ -85,7 +85,7 @@ export default async function Home() {
             <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
               <button className="gradient-bg text-white px-8 py-2.5 rounded-full text-sm font-black shrink-0 shadow-md">Todos</button>
               {categories?.map((cat) => (
-                <button 
+                <button
                   key={cat.id}
                   className="bg-primary/5 hover:bg-primary/10 border border-primary/10 px-8 py-2.5 rounded-full text-sm font-bold shrink-0 transition-colors text-slate-700 dark:text-slate-300"
                 >
@@ -114,23 +114,6 @@ export default async function Home() {
             </div>
           )}
         </section>
-
-        {/* NEWSLETTER SECTION */}
-        <section className="max-w-7xl mx-auto px-6 py-24">
-          <div className="rounded-[2.5rem] gradient-bg p-12 md:p-20 relative overflow-hidden flex flex-col items-center text-center shadow-2xl shadow-primary/20">
-            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_20%_20%,white_0%,transparent_50%)]"></div>
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 relative z-10 tracking-tighter">Sumate al Club</h2>
-            <p className="text-white/80 max-w-xl mb-12 text-lg md:text-xl font-medium relative z-10 leading-relaxed">Recibí 15% de descuento en tu primera compra y enterate antes que nadie de los lanzamientos exclusivos.</p>
-            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-lg relative z-10">
-              <input 
-                className="flex-1 rounded-full bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-2 focus:ring-white focus:bg-white/20 outline-none px-8 py-5 transition-all" 
-                placeholder="Tu email" 
-                type="email"
-              />
-              <button className="bg-white text-primary px-10 py-5 rounded-full font-black hover:bg-slate-50 transition-all hover:scale-105 active:scale-95 shadow-xl uppercase tracking-widest text-sm">Unirme</button>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* FOOTER */}
@@ -143,9 +126,6 @@ export default async function Home() {
               </div>
               <span className="text-2xl font-black tracking-tight dark:text-white">E-Shop</span>
             </div>
-            <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-10 font-medium">
-              La mejor selección de moda urbana y premium curada para los estilos más exigentes de Argentina.
-            </p>
             <div className="flex gap-4">
               {['public', 'alternate_email', 'share'].map((icon) => (
                 <a key={icon} className="size-12 bg-primary/5 hover:bg-primary rounded-full flex items-center justify-center text-primary hover:text-white transition-all duration-300" href="#">
@@ -195,7 +175,7 @@ export default async function Home() {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 pt-12 border-t border-primary/5 flex flex-col md:flex-row justify-between items-center gap-8">
-          <p className="text-slate-500 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">© 2024 E-SHOP PREMIUM E-COMMERCE.</p>
+          <p className="text-slate-500 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">© 2026 E-COMMERCE. FrameDigitalStudio</p>
           <div className="flex items-center gap-8 opacity-40 dark:invert transition-opacity hover:opacity-100">
             <img className="h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTBS2KimGMTYmdTy6z8QdBTUFdJkxFYpafCUa8wcjb2fnez2JqMxmlDjRZbeMqYPIv586PikJm2K8JPersfdUB58PVc3fW9N0Mv65AOXOaAhqTWImCQ5zCxweEWpb-A989aj1kcum805GlNDWC9czMYkiZINLM0UQiSK0qKYEt1EEYPxTLXbxya1u9u8vFdCSnCCwXrMRG8vigX_teqjRxzdse1ZaklN_q9xFmQbrybkMXokE0pUwjDAFECRn_9ODw1IP2hJM0OV8" alt="Visa" />
             <img className="h-5" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoE7DfbLKVLxDCRSIzb1zkc3-6fNbHmipnH0QkGV2gJsYFvoD3CFEMPtpKMa01bxzl0vH3hGs5MENJg0vGQmeCwk1N4ccao71nBDPlN8Mg6nTbjJd8Q7prOqIRhgGgMg8Vu3vbhonfVaNFqnN-ZgCvS7EB2BjyypXuCTJKiSWJjVegX2rTMxSZ36DeJrakWjq9WR_XG-B6Wj55748uAH_BSMW9uAJkN66zLZPfZ5HzwqTZB942Tnx6x9XBhZMYe41dkN6usTBytM4" alt="Mastercard" />

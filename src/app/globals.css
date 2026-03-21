@@ -49,7 +49,7 @@ body {
 }
 
 .glass-header {
-  background: rgba(25, 16, 34, 0.8);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }

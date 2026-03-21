@@ -27,11 +27,10 @@ export default function StoreHeader() {
                         <div className="size-10 gradient-bg rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
                             <span className="text-2xl font-black">E</span>
                         </div>
-                        <h1 className="text-xl font-bold tracking-tight hidden md:block dark:text-white">E-Shop</h1>
+                        <h1 className="text-xl font-bold tracking-tight hidden md:block">E-Shop</h1>
                     </Link>
                     <nav className="hidden lg:flex items-center gap-8">
-                        <Link className="text-sm font-medium hover:text-primary transition-colors dark:text-slate-300" href="/collections">Colecciones</Link>
-                        <Link className="text-sm font-medium hover:text-primary transition-colors dark:text-slate-300" href="/offers">Ofertas</Link>
+                        <Link className="text-sm font-medium hover:text-primary transition-colors" href="/collections">Productos</Link>
                         {user?.role === 'admin' && (
                             <Link className="text-sm font-bold text-primary hover:opacity-80 transition-opacity" href="/admin">Panel Admin</Link>
                         )}
@@ -42,7 +41,7 @@ export default function StoreHeader() {
                     <div className="flex items-center gap-4">
                         {/* Cart */}
                         <Link href="/cart" className="p-2 hover:bg-primary/10 rounded-full transition-colors relative group">
-                            <span className="material-symbols-outlined text-slate-700 dark:text-slate-300 group-hover:text-primary">shopping_bag</span>
+                            <span className="material-symbols-outlined text-slate-700 group-hover:text-primary">shopping_bag</span>
                             {cartCount > 0 && (
                                 <span className="absolute top-1 right-1 size-4 bg-primary text-[10px] flex items-center justify-center rounded-full text-white font-bold animate-in zoom-in">
                                     {cartCount}
@@ -55,7 +54,7 @@ export default function StoreHeader() {
                             <div className="flex items-center gap-4">
                                 <Link
                                     href="/orders"
-                                    className="hidden sm:block text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-primary transition-colors"
+                                    className="hidden sm:block text-sm font-semibold text-slate-700 hover:text-primary transition-colors"
                                 >
                                     Mis Pedidos
                                 </Link>
@@ -64,14 +63,14 @@ export default function StoreHeader() {
                                     className="p-2 hover:bg-red-500/10 rounded-full transition-colors group"
                                     title="Cerrar Sesión"
                                 >
-                                    <span className="material-symbols-outlined text-slate-700 dark:text-slate-300 group-hover:text-red-500">logout</span>
+                                    <span className="material-symbols-outlined text-slate-700 group-hover:text-red-500">logout</span>
                                 </button>
                             </div>
                         ) : (
                             <div className="flex items-center gap-3">
                                 <Link
                                     href="/auth/login"
-                                    className="hidden sm:block text-sm font-bold text-slate-700 dark:text-slate-300 hover:text-primary transition-colors"
+                                    className="hidden sm:block text-sm font-bold text-slate-700 hover:text-primary transition-colors"
                                 >
                                     Login
                                 </Link>

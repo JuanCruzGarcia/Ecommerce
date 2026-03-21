@@ -43,7 +43,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         .eq('active', true);
 
     return (
-        <div className="min-h-screen bg-background-light dark:bg-background-dark transition-colors duration-500">
+        <div className="min-h-screen bg-background-light transition-colors duration-500">
             <StoreHeader />
             <main className="max-w-7xl mx-auto px-6 py-12 md:py-20">
                 <ProductDetailClient product={product} variants={variants || []} />

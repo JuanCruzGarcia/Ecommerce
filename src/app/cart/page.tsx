@@ -10,9 +10,9 @@ export default function CartPage() {
 
     if (items.length === 0) {
         return (
-            <div className="min-h-screen bg-gray-50 flex flex-col">
+            <div className="min-h-screen bg-gray-50 flex flex-col pt-20">
                 <StoreHeader />
-                <main className="flex-1 flex flex-col items-center justify-center p-4 text-center">
+                <main className="flex-1 flex flex-col items-center justify-center p-4 pb-12 text-center">
                     <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                         <ShoppingBag className="w-10 h-10 text-gray-400" />
                     </div>
@@ -35,7 +35,7 @@ export default function CartPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             <StoreHeader />
-            <main className="max-w-7xl mx-auto px-4 py-8 sm:py-12">
+            <main className="max-w-7xl mx-auto px-4 pt-28 pb-12 sm:pt-32 sm:pb-16">
                 <div className="flex items-baseline justify-between mb-8 border-b border-gray-200 pb-4">
                     <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Tu Carrito</h1>
                     <span className="text-gray-500 font-medium">{items.length} productos</span>

@@ -64,7 +64,7 @@ export default function RegisterPage() {
     };
 
     return (
-        <div className="bg-background-light dark:bg-background-dark font-display antialiased">
+        <div className="bg-background-light font-display antialiased">
             <div className="flex min-h-screen w-full overflow-hidden">
                 {/* Left Panel: Gradient & Branding */}
                 <div className="hidden lg:flex lg:w-1/2 relative flex-col items-center justify-center p-12 bg-gradient-to-br from-primary via-[#4f46e5] to-[#1e1b4b]">
@@ -91,14 +91,14 @@ export default function RegisterPage() {
                 </div>
 
                 {/* Right Panel: Registration Form */}
-                <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white dark:bg-background-dark">
+                <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white">
                     <div className="w-full max-w-[440px] flex flex-col gap-8">
                         {/* Heading */}
                         <div className="flex flex-col gap-2">
-                            <h1 className="text-slate-900 dark:text-slate-100 text-4xl font-black leading-tight tracking-tight">
+                            <h1 className="text-slate-900 text-4xl font-black leading-tight tracking-tight">
                                 Crear Cuenta
                             </h1>
-                            <p className="text-slate-500 dark:text-slate-400 text-base">
+                            <p className="text-slate-500 text-base">
                                 Únete a nuestra comunidad exclusiva y empieza a comprar.
                             </p>
                         </div>
@@ -113,7 +113,7 @@ export default function RegisterPage() {
 
                             {/* Email */}
                             <div className="flex flex-col gap-2">
-                                <label className="text-slate-700 dark:text-slate-300 text-sm font-semibold px-1">Email</label>
+                                <label className="text-slate-700 text-sm font-semibold px-1">Email</label>
                                 <div className="relative flex items-center">
                                     <span className="material-symbols-outlined absolute left-4 text-slate-400">mail</span>
                                     <input 
@@ -124,7 +124,7 @@ export default function RegisterPage() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900 dark:text-slate-100" 
+                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
                                         placeholder="ejemplo@correo.com" 
                                     />
                                 </div>
@@ -132,7 +132,7 @@ export default function RegisterPage() {
 
                             {/* Password */}
                             <div className="flex flex-col gap-2">
-                                <label className="text-slate-700 dark:text-slate-300 text-sm font-semibold px-1">Contraseña</label>
+                                <label className="text-slate-700 text-sm font-semibold px-1">Contraseña</label>
                                 <div className="relative flex items-center">
                                     <span className="material-symbols-outlined absolute left-4 text-slate-400">lock</span>
                                     <input 
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900 dark:text-slate-100" 
+                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
                                         placeholder="••••••••" 
                                     />
                                 </div>
@@ -151,7 +151,7 @@ export default function RegisterPage() {
 
                             {/* Confirm Password */}
                             <div className="flex flex-col gap-2">
-                                <label className="text-slate-700 dark:text-slate-300 text-sm font-semibold px-1">Confirmar Contraseña</label>
+                                <label className="text-slate-700 text-sm font-semibold px-1">Confirmar Contraseña</label>
                                 <div className="relative flex items-center">
                                     <span className="material-symbols-outlined absolute left-4 text-slate-400">lock_reset</span>
                                     <input 
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900 dark:text-slate-100" 
+                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
                                         placeholder="••••••••" 
                                     />
                                 </div>
@@ -186,9 +186,9 @@ export default function RegisterPage() {
 
                         {/* Divider */}
                         <div className="flex items-center gap-4 py-2">
-                            <div className="h-px grow bg-slate-200 dark:bg-slate-700"></div>
+                            <div className="h-px grow bg-slate-200"></div>
                             <span className="text-slate-400 text-sm font-medium">O regístrate con</span>
-                            <div className="h-px grow bg-slate-200 dark:bg-slate-700"></div>
+                            <div className="h-px grow bg-slate-200"></div>
                         </div>
 
                         {/* Google Sign In */}
@@ -196,7 +196,7 @@ export default function RegisterPage() {
                             type="button"
                             onClick={handleGoogleLogin}
                             disabled={loading}
-                            className="w-full h-14 flex items-center justify-center gap-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors text-slate-700 dark:text-slate-300 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full h-14 flex items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50:bg-slate-700 transition-colors text-slate-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -208,7 +208,7 @@ export default function RegisterPage() {
                         </button>
 
                         {/* Footer Link */}
-                        <p className="text-center text-slate-600 dark:text-slate-400 text-sm">
+                        <p className="text-center text-slate-600 text-sm">
                             ¿Ya tenés cuenta?{' '}
                             <Link className="text-primary font-bold hover:underline decoration-2 underline-offset-4" href="/auth/login">Iniciar Sesión</Link>
                         </p>

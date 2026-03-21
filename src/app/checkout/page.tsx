@@ -273,7 +273,7 @@ export default function CheckoutPage() {
     return (
         <div className="min-h-screen bg-gray-50">
             <StoreHeader />
-            <main className="max-w-7xl mx-auto px-4 py-8">
+            <main className="max-w-7xl mx-auto px-4 pt-28 pb-12 sm:pt-32">
                 <h1 className="text-3xl font-bold text-gray-900 mb-8">Finalizar Compra</h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">

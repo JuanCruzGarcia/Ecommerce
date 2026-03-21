@@ -129,7 +129,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     return (
         <div className="min-h-screen bg-gray-50">
             <StoreHeader />
-            <main className="max-w-4xl mx-auto px-4 py-8">
+            <main className="max-w-4xl mx-auto px-4 pt-28 pb-12 sm:pt-32">
                 {/* Back Link */}
                 <div className="mb-6">
                     <Link href="/orders" className="text-sm font-medium text-gray-500 hover:text-black flex items-center gap-1 transition-colors">

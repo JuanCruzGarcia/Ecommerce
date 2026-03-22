@@ -25,6 +25,20 @@ function CheckoutSuccessContent() {
         if (externalReference) {
             setOrderId(externalReference);
         }
+
+        // Llamar a nuestra API para confirmar el pago si webhook demora
+        if (paymentId && externalReference && status === 'approved') {
+            fetch('/api/checkout/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    payment_id: paymentId,
+                    external_reference: externalReference,
+                }),
+            }).then(r => r.json())
+              .then(data => console.log('✅ Verificación manual de pago completada:', data))
+              .catch(e => console.error('❌ Error verificando manual el pago:', e));
+        }
     }, [searchParams]);
 
     return (

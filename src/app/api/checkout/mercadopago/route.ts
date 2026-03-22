@@ -132,7 +132,20 @@ export async function POST(req: NextRequest) {
 
         const preference = new Preference(client);
 
-        const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+        let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+        
+        if (!baseUrl) {
+            if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+                baseUrl = `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+            } else if (process.env.VERCEL_URL) {
+                baseUrl = `https://${process.env.VERCEL_URL}`;
+            } else {
+                baseUrl = 'http://localhost:3000';
+            }
+        }
+        
+        // Evitar doble slash al final
+        baseUrl = baseUrl.replace(/\/$/, "");
 
         const preferenceData = {
             items: items.map((item: any) => ({

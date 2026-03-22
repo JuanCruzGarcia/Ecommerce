@@ -1,9 +1,10 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState, useCallback, useTransition } from 'react';
 
-export default function ProductSearch({ categories }: { categories: { id: string, name: string }[] }) {
+function ProductSearchInner({ categories }: { categories: { id: string, name: string }[] }) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
@@ -90,5 +91,24 @@ export default function ProductSearch({ categories }: { categories: { id: string
                 </div>
             )}
         </div>
+    );
+}
+
+export default function ProductSearch({ categories }: { categories: { id: string, name: string }[] }) {
+    return (
+        <Suspense fallback={
+            <div className="mb-12">
+                <div className="relative max-w-2xl mx-auto mb-8">
+                    <div className="w-full h-14 bg-gray-100 rounded-full animate-pulse" />
+                </div>
+                <div className="flex gap-3 justify-center">
+                    {[1, 2, 3, 4].map((i) => (
+                        <div key={i} className="w-24 h-10 bg-gray-100 rounded-full animate-pulse" />
+                    ))}
+                </div>
+            </div>
+        }>
+            <ProductSearchInner categories={categories} />
+        </Suspense>
     );
 }

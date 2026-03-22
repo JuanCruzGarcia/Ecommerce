@@ -150,8 +150,8 @@ export async function POST(req: NextRequest) {
             // auto_return: 'all' as const, // Desactivado temporalmente para evitar error con localhost
             external_reference: order.id, // ID de la orden para tracking
 
-            // Webhook configurado con ngrok para testing local
-            notification_url: 'https://unsacrilegious-samiyah-territorially.ngrok-free.dev/api/webhooks/mercadopago',
+            // Webhook URL dinámica (funciona tanto en local como en Vercel)
+            notification_url: `${baseUrl}/api/webhooks/mercadopago`,
 
             payer: {
                 name: shippingData?.name || 'Test User',
@@ -174,12 +174,18 @@ export async function POST(req: NextRequest) {
         console.log('🧪 sandbox_init_point:', response.sandbox_init_point);
         console.log('📦 Respuesta completa:', JSON.stringify(response, null, 2));
 
+        // Modo SANDBOX (test): usar sandbox_init_point para no cobrar dinero real
+        // Para pasar a producción real: cambiar a init_point y usar ACCESS TOKEN de producción
+        const isSandbox = process.env.MERCADOPAGO_ACCESS_TOKEN?.startsWith('TEST-');
+
         return NextResponse.json({
             success: true,
             orderId: order.id,
             preferenceId: response.id,
             initPoint: response.init_point,
             sandboxInitPoint: response.sandbox_init_point,
+            // Le dice al frontend qué URL usar
+            isSandbox,
         });
     } catch (error: any) {
         console.error('❌ Error en /api/checkout/mercadopago:', error);

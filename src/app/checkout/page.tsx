@@ -246,10 +246,11 @@ export default function CheckoutPage() {
 
             console.log('✅ Preferencia creada:', data.preferenceId);
 
-            // Redirigir a MercadoPago
-            // NOTA: Cambiado temporalmente a initPoint para evitar problemas con sandbox
-            // Para testing: sandboxInitPoint, Para producción: initPoint
-            const paymentUrl = data.initPoint || data.sandboxInitPoint;
+            // El backend detecta automáticamente si es modo TEST o Producción
+            // y nos dice cuál URL usar mediante la bandera `isSandbox`
+            const paymentUrl = data.isSandbox
+                ? data.sandboxInitPoint  // Credenciales TEST-xxx → sandbox (sin cobro real)
+                : data.initPoint;        // Credenciales APP_USR-xxx → producción real
 
             if (!paymentUrl) {
                 throw new Error('No se recibió URL de pago');

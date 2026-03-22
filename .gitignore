@@ -43,3 +43,5 @@ next-env.d.ts
 # sensible/personal files
 /docs
 /supabase/migrations
+ngrok.exe
+*.exe

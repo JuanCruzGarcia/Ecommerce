@@ -1,6 +1,6 @@
 import { createSupabaseServer } from '@/lib/supabase/server';
 import StoreHeader from '@/components/StoreHeader';
-import ProductCard from '@/components/ProductCard';
+import CategoryFilterGrid from '@/components/CategoryFilterGrid';
 
 type Product = {
   id: string;
@@ -73,38 +73,10 @@ export default async function Home() {
 
         {/* CATEGORIES SECTION */}
         <section className="max-w-7xl mx-auto px-6 py-12">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12 border-b border-primary/10 pb-8">
-            <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth">
-              <button className="gradient-bg text-white px-8 py-2.5 rounded-full text-sm font-black shrink-0 shadow-md">Todos</button>
-              {categories?.map((cat) => (
-                <button
-                  key={cat.id}
-                  className="bg-primary/5 hover:bg-primary/10 border border-primary/10 px-8 py-2.5 rounded-full text-sm font-bold shrink-0 transition-colors text-slate-700"
-                >
-                  {cat.name}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-2 text-slate-400 hover:text-primary transition-colors cursor-pointer group">
-              <span className="material-symbols-outlined text-xl">filter_list</span>
-              <span className="text-sm font-bold uppercase tracking-wider">Filtrar y Ordenar</span>
-            </div>
-          </div>
-
-          {/* PRODUCT GRID */}
-          {products && products.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12">
-              {(products as Product[]).map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-24 bg-slate-50 rounded-3xl border-2 border-dashed border-slate-200">
-              <span className="material-symbols-outlined text-6xl text-slate-300 mb-4 block">inventory_2</span>
-              <h3 className="text-xl font-bold text-slate-900">Próximamente...</h3>
-              <p className="text-slate-500 mt-2">Estamos curando las mejores piezas para vos.</p>
-            </div>
-          )}
+          <CategoryFilterGrid
+            products={(products as Product[]) || []}
+            categories={categories || []}
+          />
         </section>
       </main>
 

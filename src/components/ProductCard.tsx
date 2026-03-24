@@ -62,8 +62,8 @@ export default function ProductCard({ product }: ProductCardProps) {
                     )}
 
                     {/* Overlay Action */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-6 z-10">
-                        <button className="w-full bg-white text-black py-3 rounded-full font-bold flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-xl">
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4 lg:p-6 z-10">
+                        <button className="w-full bg-white text-black py-2.5 lg:py-3 rounded-full text-sm lg:text-base font-bold flex items-center justify-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 shadow-xl">
                             <span className="material-symbols-outlined text-xl">visibility</span>
                             Ver Detalles
                         </button>
@@ -76,11 +76,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 <div className="space-y-1">
-                    <h3 className="font-bold text-lg text-slate-900 group-hover:text-primary transition-colors truncate">
+                    <h3 className="font-bold text-sm lg:text-lg text-slate-900 group-hover:text-primary transition-colors line-clamp-2">
                         {product.name}
                     </h3>
-                    <div className="flex items-center justify-between">
-                        <p className="text-primary font-black text-xl">
+                    <div className="flex items-center justify-between gap-1 flex-wrap">
+                        <p className="text-primary font-black animate-in fade-in zoom-in text-base lg:text-xl">
                             ${product.price.toLocaleString('es-AR')}
                         </p>
                         {product.stock <= 0 ? (

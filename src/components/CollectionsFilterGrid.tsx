@@ -77,7 +77,7 @@ export default function CollectionsFilterGrid({ products, categories }: Collecti
       </div>
 
       {/* Category Buttons */}
-      <div className="flex gap-3 overflow-x-auto pb-4 no-scrollbar scroll-smooth justify-center mb-6">
+      <div className="sticky top-20 z-40 bg-background-light py-4 -mx-6 px-6 sm:mx-0 sm:px-0 flex gap-3 overflow-x-auto no-scrollbar scroll-smooth justify-start md:justify-center mb-6">
         <button
           onClick={() => setActiveCategory('')}
           className={`px-8 py-2.5 rounded-full text-sm font-black shrink-0 shadow-md transition-colors ${
@@ -128,7 +128,7 @@ export default function CollectionsFilterGrid({ products, categories }: Collecti
 
       {/* Product Grid */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-12 text-left">
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-6 sm:gap-x-8 sm:gap-y-12 text-left">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

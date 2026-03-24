@@ -107,7 +107,7 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
     };
 
     return (
-        <div className="min-h-screen bg-background-light text-slate-900 font-display px-4 lg:px-12 py-6">
+        <div className="text-slate-900 font-display">
             {/* Breadcrumbs */}
             <nav className="flex items-center gap-2 text-sm font-medium text-slate-500 mb-6 overflow-x-auto overflow-y-hidden no-scrollbar whitespace-nowrap scroll-smooth pb-2">
                 <a className="hover:text-primary transition-colors shrink-0" href="/">Inicio</a>

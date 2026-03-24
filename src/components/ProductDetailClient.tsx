@@ -123,26 +123,26 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
 
             {/* Product Grid 50/50 for tighter layout */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
-                
+
                 {/* Left Column: Gallery */}
                 <div className="space-y-4">
                     <div className="relative group aspect-square lg:aspect-[4/3] rounded-3xl overflow-hidden bg-white border border-primary/10 shadow-lg transition-all duration-500">
-                        <img 
-                            src={allImages[currentImageIndex]} 
+                        <img
+                            src={allImages[currentImageIndex]}
                             alt={product.name}
                             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                         />
-                        
+
                         {/* Glassmorphism Navigation */}
                         {allImages.length > 1 && (
                             <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 flex justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                <button 
+                                <button
                                     onClick={() => setCurrentImageIndex(prev => (prev === 0 ? allImages.length - 1 : prev - 1))}
                                     className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all hover:scale-110 shadow-lg"
                                 >
                                     <span className="material-symbols-outlined text-2xl">chevron_left</span>
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setCurrentImageIndex(prev => (prev === allImages.length - 1 ? 0 : prev + 1))}
                                     className="w-10 h-10 flex items-center justify-center rounded-full bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/40 transition-all hover:scale-110 shadow-lg"
                                 >
@@ -153,9 +153,9 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
 
                         {/* Zoom/Expand info */}
                         <div className="absolute bottom-4 right-4">
-                             <div className="bg-black/40 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10">
+                            <div className="bg-black/40 backdrop-blur-md text-white px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-white/10">
                                 Vista Premium
-                             </div>
+                            </div>
                         </div>
                     </div>
 
@@ -163,7 +163,7 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
                     {allImages.length > 1 && (
                         <div className="flex gap-3 overflow-x-auto overflow-y-hidden pb-2 no-scrollbar scroll-smooth">
                             {allImages.map((img, idx) => (
-                                <button 
+                                <button
                                     key={idx}
                                     onClick={() => setCurrentImageIndex(idx)}
                                     className={`flex-shrink-0 w-20 h-20 rounded-xl p-0.5 transition-all duration-300 transform ${currentImageIndex === idx ? 'bg-gradient-to-tr from-primary to-accent-blue scale-105 shadow-md' : 'bg-transparent border border-primary/10 hover:border-primary/40'}`}
@@ -188,7 +188,7 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
                         <h1 className="text-3xl lg:text-4xl font-black leading-tight mb-4 text-slate-900 tracking-tight">
                             {product.name}
                         </h1>
-                        
+
                         <div className="flex items-center gap-3 mb-2">
                             <div className="flex items-center gap-2 px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
                                 <span className="relative flex h-2 w-2">
@@ -216,8 +216,8 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
                             )}
                         </div>
                         <p className="text-xs text-primary font-bold flex items-center gap-1.5">
-                             <span className="material-symbols-outlined text-sm">credit_card</span>
-                             6 cuotas sin interés de ${(currentPrice / 6).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
+                            <span className="material-symbols-outlined text-sm">credit_card</span>
+                            6 cuotas sin interés de ${(currentPrice / 6).toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                         </p>
                     </div>
 
@@ -253,7 +253,7 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
                     <div className="pt-2">
                         <div className="flex gap-3">
                             <div className="flex items-center border-2 border-slate-100 rounded-xl bg-white px-1 h-12">
-                                <button 
+                                <button
                                     onClick={decreaseQuantity}
                                     className="w-8 flex items-center justify-center hover:text-primary transition-colors disabled:opacity-20"
                                     disabled={quantity <= 1}
@@ -261,7 +261,7 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
                                     <span className="material-symbols-outlined font-black text-sm">remove</span>
                                 </button>
                                 <span className="w-8 text-center font-black text-sm tabular-nums">{quantity}</span>
-                                <button 
+                                <button
                                     onClick={increaseQuantity}
                                     className="w-8 flex items-center justify-center hover:text-primary transition-colors disabled:opacity-20"
                                     disabled={quantity >= currentStock}
@@ -269,7 +269,7 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
                                     <span className="material-symbols-outlined font-black text-sm">add</span>
                                 </button>
                             </div>
-                            <button 
+                            <button
                                 onClick={handleAddToCart}
                                 disabled={isAdding || isOutOfStock || (hasVariants && !selectedVariant)}
                                 className="flex-1 h-12 bg-gradient-to-r from-primary to-accent-blue text-white rounded-xl font-black text-sm shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:grayscale disabled:transform-none"
@@ -314,24 +314,12 @@ export default function ProductDetailClient({ product, variants }: { product: Pr
             <div className="mt-12 border-t border-primary/10 pt-8 pb-12 max-w-7xl mx-auto">
                 <div className="flex gap-8 border-b border-primary/5 mb-6">
                     <button className="pb-3 border-b-2 border-primary font-black text-sm uppercase tracking-wider">Descripción</button>
-                    <button className="pb-3 border-b-2 border-transparent text-slate-400 font-black text-sm uppercase tracking-wider hover:text-slate-600 transition-colors">Especificaciones</button>
-                    <button className="pb-3 border-b-2 border-transparent text-slate-400 font-black text-sm uppercase tracking-wider hover:text-slate-600 transition-colors">Opiniones</button>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
                         <p className="text-sm text-slate-600 leading-relaxed font-medium">
                             {product.description}
                         </p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div className="p-5 bg-white rounded-2xl border border-primary/5">
-                            <h4 className="font-black mb-2 uppercase tracking-widest text-[10px] text-primary">Calidad</h4>
-                            <p className="text-xs text-slate-500 font-semibold leading-relaxed">Inspeccionada manualmente para asegurar altos estándares.</p>
-                        </div>
-                        <div className="p-5 bg-white rounded-2xl border border-primary/5">
-                            <h4 className="font-black mb-2 uppercase tracking-widest text-[10px] text-primary">Sostenibilidad</h4>
-                            <p className="text-xs text-slate-500 font-semibold leading-relaxed">Procesos éticos y materiales de bajo impacto ambiental.</p>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -65,24 +65,24 @@ export default function RegisterPage() {
 
     return (
         <div className="bg-background-light font-display antialiased">
-            <div className="flex min-h-screen w-full overflow-hidden">
+            <div className="flex h-screen w-full overflow-hidden">
                 {/* Left Panel: Gradient & Branding */}
-                <div className="hidden lg:flex lg:w-1/2 relative flex-col items-center justify-center p-12 bg-gradient-to-br from-primary via-[#4f46e5] to-[#1e1b4b]">
+                <div className="hidden lg:flex lg:w-1/2 relative flex-col items-center justify-center p-12 mesh-gradient">
                     {/* Abstract Pattern Overlay */}
                     <div className="absolute inset-0 opacity-20" style={{backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDi8mnJSVjtrE4i-hGQykmRhDVYlciJuZQ8EmO0GqDSMiS841MhUqfVfH6e79q_7QzwV-gHt8jtY_0WBn8kipCWEgcsTEcwjQO68krPJGk2Is96PFMT_73dmJZ2yh8ivt6HWghpHgbtuq-av_4uCPI3nAflTkYgW6NwXUYB40DpMx65whub0C1UXkIBlsmIcww8cd87Mx75VaW5QYN7oKVk7r4vOBxPco4HJNIdQVxWQzzZF3ShEabFUiz2v4MwX0RD-RuMxZrjrVU')", backgroundBlendMode: 'overlay', backgroundSize: 'cover'}}></div>
                     <div className="relative z-10 flex flex-col items-center text-center">
                         {/* Glowing Logo */}
-                        <div className="mb-8 flex items-center justify-center size-24 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
-                            <span className="text-white text-5xl font-black tracking-tighter">E</span>
+                        <div className="mb-6 flex items-center justify-center size-20 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 shadow-2xl">
+                            <span className="material-symbols-outlined text-white text-5xl">location_on</span>
                         </div>
-                        <h2 className="text-white text-4xl font-bold mb-4">Bienvenido a Premium E-Shop</h2>
+                        <h2 className="text-white text-3xl font-bold mb-3">Bienvenido a DISTRIPHONE</h2>
                         <p className="text-white/80 text-lg max-w-md">
                             Descubre una experiencia de compra exclusiva con los mejores productos seleccionados para ti.
                         </p>
                     </div>
                     {/* Bottom Accent */}
                     <div className="absolute bottom-12 left-12 right-12 z-10 flex justify-between items-center text-white/60 text-sm">
-                        <span>© 2024 Premium E-Shop.</span>
+                        <span>© 2026 DISTRIPHONE.</span>
                         <div className="flex gap-4">
                             <a className="hover:text-white transition-colors" href="#">Privacidad</a>
                             <a className="hover:text-white transition-colors" href="#">Términos</a>
@@ -91,14 +91,14 @@ export default function RegisterPage() {
                 </div>
 
                 {/* Right Panel: Registration Form */}
-                <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-24 bg-white">
-                    <div className="w-full max-w-[440px] flex flex-col gap-8">
+                <div className="w-full lg:w-1/2 flex items-center justify-center overflow-y-auto p-6 sm:p-8 lg:p-12 bg-white">
+                    <div className="w-full max-w-[440px] flex flex-col gap-5 my-auto">
                         {/* Heading */}
-                        <div className="flex flex-col gap-2">
-                            <h1 className="text-slate-900 text-4xl font-black leading-tight tracking-tight">
+                        <div className="flex flex-col gap-1">
+                            <h1 className="text-slate-900 text-3xl font-black leading-tight tracking-tight">
                                 Crear Cuenta
                             </h1>
-                            <p className="text-slate-500 text-base">
+                            <p className="text-slate-500 text-sm">
                                 Únete a nuestra comunidad exclusiva y empieza a comprar.
                             </p>
                         </div>
@@ -124,7 +124,7 @@ export default function RegisterPage() {
                                         required
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
+                                        className="w-full h-12 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
                                         placeholder="ejemplo@correo.com" 
                                     />
                                 </div>
@@ -143,7 +143,7 @@ export default function RegisterPage() {
                                         required
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
+                                        className="w-full h-12 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
                                         placeholder="••••••••" 
                                     />
                                 </div>
@@ -162,7 +162,7 @@ export default function RegisterPage() {
                                         required
                                         value={confirmPassword}
                                         onChange={(e) => setConfirmPassword(e.target.value)}
-                                        className="w-full h-14 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
+                                        className="w-full h-12 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all text-slate-900" 
                                         placeholder="••••••••" 
                                     />
                                 </div>
@@ -172,7 +172,7 @@ export default function RegisterPage() {
                             <button 
                                 type="submit"
                                 disabled={loading}
-                                className="mt-2 w-full h-14 rounded-xl bg-gradient-to-r from-primary to-[#4f46e5] hover:opacity-90 text-white font-bold text-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="mt-2 w-full h-12 rounded-xl gradient-bg hover:opacity-90 text-white font-bold text-lg shadow-lg shadow-primary/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {loading ? (
                                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
@@ -196,7 +196,7 @@ export default function RegisterPage() {
                             type="button"
                             onClick={handleGoogleLogin}
                             disabled={loading}
-                            className="w-full h-14 flex items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50:bg-slate-700 transition-colors text-slate-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full h-12 flex items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50:bg-slate-700 transition-colors text-slate-700 font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <svg className="w-5 h-5" viewBox="0 0 24 24">
                                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>

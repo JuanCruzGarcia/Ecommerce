@@ -115,9 +115,9 @@ export default function StoreHeader() {
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 group cursor-pointer">
                         <div className="size-10 gradient-bg rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/20 transition-transform group-hover:scale-105">
-                            <span className="text-2xl font-black">E</span>
+                            <span className="material-symbols-outlined text-2xl">location_on</span>
                         </div>
-                        <h1 className="text-xl font-bold tracking-tight hidden md:block">E-Shop</h1>
+                        <h1 className="text-xl font-bold tracking-tight hidden md:block">DISTRIPHONE</h1>
                     </Link>
                     {/* Nav - Desktop (lg+) only */}
                     <nav className="hidden lg:flex items-center gap-8">

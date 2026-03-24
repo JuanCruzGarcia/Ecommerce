@@ -82,13 +82,13 @@ function LoginForm() {
     };
 
     return (
-        <div className="max-w-[440px] w-full space-y-8">
-            <div className="text-left space-y-2">
-                <h2 className="text-4xl font-black text-slate-900 tracking-tight">Bienvenido de nuevo</h2>
-                <p className="text-slate-500 font-medium">Ingresa tus credenciales para acceder a tu cuenta</p>
+        <div className="max-w-[440px] w-full space-y-6 my-auto">
+            <div className="text-left space-y-1">
+                <h2 className="text-3xl font-black text-slate-900 tracking-tight">Bienvenido de nuevo</h2>
+                <p className="text-slate-500 font-medium text-sm">Ingresa tus credenciales para acceder a tu cuenta</p>
             </div>
             
-            <form className="space-y-5" onSubmit={handleLogin}>
+            <form className="space-y-4" onSubmit={handleLogin}>
                 {error && (
                     <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm font-medium">
                         {error}
@@ -110,7 +110,7 @@ function LoginForm() {
                             required
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            className="block w-full pl-11 pr-4 h-14 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-slate-900 placeholder:text-slate-400" 
+                            className="block w-full pl-11 pr-4 h-12 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-slate-900 placeholder:text-slate-400" 
                             placeholder="nombre@ejemplo.com" 
                         />
                     </div>
@@ -134,7 +134,7 @@ function LoginForm() {
                             required
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="block w-full pl-11 pr-12 h-14 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-slate-900 placeholder:text-slate-400" 
+                            className="block w-full pl-11 pr-12 h-12 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-slate-900 placeholder:text-slate-400" 
                             placeholder="••••••••" 
                         />
                         <button className="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600" type="button">
@@ -152,7 +152,7 @@ function LoginForm() {
                 <button 
                     type="submit"
                     disabled={loading}
-                    className="w-full flex items-center justify-center h-14 bg-gradient-to-r from-primary to-[#4f06a8] hover:shadow-lg hover:shadow-primary/30 text-white font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center h-12 gradient-bg hover:shadow-lg hover:shadow-primary/30 text-white font-bold rounded-xl transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {loading ? (
                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
@@ -175,7 +175,7 @@ function LoginForm() {
                 type="button"
                 onClick={handleGoogleLogin}
                 disabled={loading}
-                className="w-full h-14 flex items-center justify-center gap-3 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                className="w-full h-12 flex items-center justify-center gap-3 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
@@ -198,21 +198,19 @@ function LoginForm() {
 // when useSearchParams() is used in a statically rendered page.
 export default function LoginPage() {
     return (
-        <div className="bg-background-light min-h-screen flex items-center justify-center font-display">
-            <div className="flex w-full min-h-screen overflow-hidden">
+        <div className="bg-background-light h-screen flex items-center justify-center font-display overflow-hidden">
+            <div className="flex w-full h-full overflow-hidden">
                 {/* Left Panel: Brand & Visuals */}
-                <div className="hidden lg:flex w-1/2 mesh-gradient relative flex-col justify-between p-16 text-white overflow-hidden">
+                <div className="hidden lg:flex w-1/2 mesh-gradient relative flex-col justify-between p-12 text-white overflow-hidden">
                     {/* Abstract Mesh Pattern Overlay */}
                     <div className="absolute inset-0 opacity-20 pointer-events-none" style={{backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZM6fDYL1ATA3lPS0em33XcnhYa04IVRQRBSRnQQMr70kriOSQi8dWY771VKe3S5O8CNjQ1ppl7KQbn5e7tc42zgaL4g7HlGsOrXvaeyNzoTa0yO8tI9qL0TjC3OlCiV37s9pBcz5wj7_r1X7Yrhz7Et6dPo5IekOaCCLv7fJxyqJF9PAVXsDJn248HudEj4j-Nzmb3C7rbpMKxmsDLpU6GzddyQOY_QdS5tN4fWpQJf2gdrNbBH9UHv54-xmU4fvJ_oep0H3eUxc')"}}>
                     </div>
                     <div className="relative z-10">
                         <div className="flex items-center gap-3">
-                            <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/20">
-                                <svg className="size-8 text-white" fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                                    <path clipRule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fillRule="evenodd"></path>
-                                </svg>
+                            <div className="bg-white/10 backdrop-blur-md p-2 rounded-lg border border-white/20 flex items-center justify-center">
+                                <span className="material-symbols-outlined size-8 text-white flex items-center justify-center text-3xl">location_on</span>
                             </div>
-                            <span className="text-2xl font-black tracking-tighter">EXCELLENCE</span>
+                            <span className="text-2xl font-black tracking-tighter">DISTRIPHONE</span>
                         </div>
                     </div>
                     <div className="relative z-10 space-y-4">
@@ -224,7 +222,7 @@ export default function LoginPage() {
                         </p>
                     </div>
                     <div className="relative z-10 flex gap-4 text-sm font-medium text-white/60">
-                        <span>© 2024 Excellence Inc.</span>
+                        <span>© 2026 DISTRIPHONE.</span>
                         <a className="hover:text-white" href="#">Privacidad</a>
                         <a className="hover:text-white" href="#">Términos</a>
                     </div>
@@ -233,7 +231,7 @@ export default function LoginPage() {
                 </div>
 
                 {/* Right Panel: Login Form wrapped in Suspense */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-center items-center bg-white p-8 md:p-20">
+                <div className="w-full lg:w-1/2 flex flex-col justify-center items-center overflow-y-auto bg-white p-6 md:p-12">
                     <Suspense fallback={
                         <div className="flex items-center justify-center">
                             <svg className="animate-spin h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24">

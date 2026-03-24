@@ -52,7 +52,7 @@ export default async function Home() {
         <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 hero-gradient z-0"></div>
           <div className="absolute -top-40 -right-40 size-[600px] bg-primary/20 blur-[120px] rounded-full"></div>
-          <div className="absolute -bottom-40 -left-40 size-[600px] bg-blue-500/10 blur-[120px] rounded-full"></div>
+          <div className="absolute -bottom-40 -left-40 size-[600px] bg-secondary/10 blur-[120px] rounded-full"></div>
 
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-8">
@@ -86,9 +86,9 @@ export default async function Home() {
           <div className="col-span-1 md:col-span-1">
             <div className="flex items-center gap-2 mb-8 group cursor-pointer">
               <div className="size-10 gradient-bg rounded-lg flex items-center justify-center text-white shadow-lg transition-transform group-hover:rotate-12">
-                <span className="text-xl font-black">E</span>
+                <span className="material-symbols-outlined text-2xl">location_on</span>
               </div>
-              <span className="text-2xl font-black tracking-tight">E-Shop</span>
+              <span className="text-2xl font-black tracking-tight">DISTRIPHONE</span>
             </div>
             <div className="flex gap-4">
               {['public', 'alternate_email', 'share'].map((icon) => (

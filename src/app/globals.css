@@ -14,7 +14,8 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: "Inter", sans-serif;
-  --color-primary: #7f0df2;
+  --color-primary: #34738C;
+  --color-secondary: #D16224;
   --color-background-light: #f7f5f8;
   --color-background-dark: #191022;
 }
@@ -41,11 +42,11 @@ body {
 }
 
 .mesh-gradient {
-  background-color: #7f0df2;
+  background-color: #34738C;
   background-image: 
-      radial-gradient(at 0% 0%, hsla(263,93%,50%,1) 0, transparent 50%), 
-      radial-gradient(at 50% 0%, hsla(220,100%,20%,1) 0, transparent 50%), 
-      radial-gradient(at 100% 0%, hsla(263,93%,30%,1) 0, transparent 50%);
+      radial-gradient(at 0% 0%, hsla(197,46%,38%,1) 0, transparent 50%), 
+      radial-gradient(at 50% 0%, hsla(22,71%,48%,1) 0, transparent 50%), 
+      radial-gradient(at 100% 0%, hsla(197,46%,25%,1) 0, transparent 50%);
 }
 
 .glass-header {
@@ -55,19 +56,19 @@ body {
 }
 
 .gradient-text {
-  background: linear-gradient(135deg, #7f0df2 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #34738C 0%, #D16224 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gradient-bg {
-  background: linear-gradient(135deg, #7f0df2 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #34738C 0%, #D16224 100%);
 }
 
 .hero-gradient {
-  background: radial-gradient(circle at top right, rgba(127, 13, 242, 0.2), transparent), 
-              radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.1), transparent);
+  background: radial-gradient(circle at top right, rgba(52, 115, 140, 0.2), transparent), 
+              radial-gradient(circle at bottom left, rgba(209, 98, 36, 0.1), transparent);
 }
 
 /* Fix for possible stray numeric spinners */

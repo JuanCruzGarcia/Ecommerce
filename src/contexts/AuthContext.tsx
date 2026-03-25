@@ -28,35 +28,45 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const supabase = createSupabaseClient();
 
     useEffect(() => {
+        // Carga el perfil y actualiza el estado. NO hace redirecciones.
+        const loadUserProfile = async (userId: string) => {
+            const { data: profile } = await supabase
+                .from('profiles')
+                .select('id, role')
+                .eq('id', userId)
+                .single();
+
+            if (profile) {
+                setUser(profile);
+            } else {
+                console.warn('AuthContext: Usuario sin perfil, usando fallback.');
+                setUser({ id: userId, role: 'customer' });
+            }
+        };
+
         const loadUser = async () => {
-            // Intentar obtener sesión actual
-            const { data: { session }, error } = await supabase.auth.getSession();
-            const user = session?.user;
+            const { data: { session } } = await supabase.auth.getSession();
+            const authUser = session?.user;
 
-            if (user) {
-                console.log("AuthContext: Sesión activa detectada:", user.email);
+            if (authUser) {
+                console.log('AuthContext: Sesión activa detectada:', authUser.email);
+                await loadUserProfile(authUser.id);
 
-                const { data: profile, error: profileError } = await supabase
-                    .from('profiles')
-                    .select('id, role')
-                    .eq('id', user.id)
-                    .single();
-
-                if (profile) {
-                    setUser(profile);
-                    // Redirección basada en Rol si venimos de un login
-                    if (profile.role === 'admin' && window.location.pathname.startsWith('/auth')) {
+                // Solo redirige si estamos en una página de auth (ej: recarga con sesión activa)
+                if (window.location.pathname.startsWith('/auth')) {
+                    const { data: profile } = await supabase
+                        .from('profiles')
+                        .select('role')
+                        .eq('id', authUser.id)
+                        .single();
+                    if (profile?.role === 'admin') {
                         router.push('/admin');
-                    } else if (window.location.pathname.startsWith('/auth')) {
+                    } else {
                         router.push('/');
                     }
-                } else {
-                    console.warn("AuthContext: Usuario sin perfil, usando fallback.");
-                    setUser({ id: user.id, role: 'customer' });
-                    if (window.location.pathname.startsWith('/auth')) router.push('/');
                 }
             } else {
-                console.log("AuthContext: No hay sesión activa.");
+                console.log('AuthContext: No hay sesión activa.');
                 setUser(null);
             }
             setLoading(false);
@@ -65,19 +75,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loadUser();
 
         // Escuchar cambios de estado (login, logout, refresh)
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-            console.log("AuthContext: Cambio de estado auth:", event);
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+            console.log('AuthContext: Cambio de estado auth:', event);
+
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-                const user = session?.user;
-                if (user) {
-                    // Lógica repetida para asegurar redirección en casos de evento
-                    supabase.from('profiles').select('role').eq('id', user.id).single()
-                        .then(({ data: profile }) => {
-                            if (profile?.role === 'admin' && window.location.pathname.startsWith('/auth')) {
-                                router.push('/admin');
-                            }
-                        });
-                    loadUser();
+                // Solo actualizar estado, NO redirigir.
+                // La página de login ya maneja el redirect post-login.
+                const authUser = session?.user;
+                if (authUser) {
+                    await loadUserProfile(authUser.id);
+                    setLoading(false);
                 }
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);

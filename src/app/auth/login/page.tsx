@@ -49,13 +49,19 @@ function LoginForm() {
                 // Si falla al obtener perfil, permitimos entrar igual (probablemente sea customer)
             }
 
+            // Primero sincronizamos el estado del servidor (cookies de sesión),
+            // luego navegamos. Si refresh() va después de push(), Next.js puede
+            // cancelar la navegación al revalidar la página actual.
+            router.refresh();
+
+            // Pequeño delay para asegurar que el refresh termine antes de navegar
+            await new Promise(resolve => setTimeout(resolve, 100));
+
             if (profile?.role === 'admin') {
                 router.push('/admin');
             } else {
                 router.push(redirectUrl);
             }
-
-            router.refresh();
 
         } catch (err: any) {
             setError(err.message || 'Ocurrió un error al iniciar sesión');

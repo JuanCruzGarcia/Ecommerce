@@ -63,7 +63,7 @@ export default async function Home() {
               Descubrí lo <span className="gradient-text">Nuevo</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-              Explora la colección premium con diseños exclusivos que fusionan el estilo urbano con la máxima elegancia.
+              Descubrí todo lo que necesitás en un solo lugar, con variedad y calidad para tu día a día.
             </p>
           </div>
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">

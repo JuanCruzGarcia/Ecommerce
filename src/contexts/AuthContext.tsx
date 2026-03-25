@@ -61,16 +61,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         loadUser();
 
         // Escuchar cambios de estado (login, logout, refresh)
-        const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+        // ATENCION: El callback NO debe ser async para no bloquear la promesa de signIn de Supabase
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
             console.log('AuthContext: Cambio de estado auth:', event);
 
             if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-                // Solo actualizar estado, NO redirigir.
-                // La página de login ya maneja el redirect post-login.
                 const authUser = session?.user;
                 if (authUser) {
-                    await loadUserProfile(authUser.id);
-                    setLoading(false);
+                    // Ejecutamos en background sin bloquear
+                    loadUserProfile(authUser.id).then(() => {
+                        setLoading(false);
+                    });
                 }
             } else if (event === 'SIGNED_OUT') {
                 setUser(null);

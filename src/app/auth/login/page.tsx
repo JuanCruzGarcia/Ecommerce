@@ -35,12 +35,15 @@ function LoginForm() {
                 throw authError;
             }
 
+            console.log('Login form: signInWithPassword success', data.user?.email);
+
             // La sesión ya está guardada en cookies por Supabase.
-            // Hacemos una navegación completa (hard navigate) al endpoint de redirección
-            // del servidor, que lee el rol desde la DB y decide a dónde ir.
-            // Pasamos 'redirect' como fallback si el usuario no es admin.
+            // Redirigimos al servidor para que él verifique el rol seguro y decida a dónde ir.
             const encodedRedirect = encodeURIComponent(redirectUrl);
-            window.location.replace(`/auth/redirect?next=${encodedRedirect}`);
+            const target = `/auth/redirect?next=${encodedRedirect}`;
+            
+            console.log('Login form: Redirigiendo a', target);
+            window.location.replace(target);
             // El botón permanece en 'cargando' hasta que el browser complete la navegación.
 
         } catch (err: any) {

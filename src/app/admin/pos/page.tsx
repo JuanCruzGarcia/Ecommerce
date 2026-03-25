@@ -50,6 +50,7 @@ export default function POSPage() {
     const [loading, setLoading] = useState(true);
     const [processing, setProcessing] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isCartOpen, setIsCartOpen] = useState(false);
 
     // Modal State for Variant Selection
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
@@ -304,21 +305,21 @@ export default function POSPage() {
     }
 
     return (
-        <div className="flex h-[calc(100vh-64px)] bg-gray-50 overflow-hidden font-sans">
+        <div className="flex relative h-[calc(100vh-64px)] bg-gray-50 overflow-hidden font-sans">
             {/* --- LEFT PANEL: PRODUCTS --- */}
-            <div className="flex-1 flex flex-col p-6 pr-3 min-w-0">
-                <div className="flex items-center justify-between mb-6 flex-shrink-0">
+            <div className="flex-1 flex flex-col p-4 sm:p-6 min-w-0">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 flex-shrink-0 gap-4">
                     <div>
-                        <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">Punto de Venta</h1>
-                        <p className="text-sm text-gray-500 mt-1">Selecciona productos para agregar a la orden</p>
+                        <h1 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">Punto de Venta</h1>
+                        <p className="text-xs sm:text-sm text-gray-500 mt-1">Selecciona productos para agregar a la orden</p>
                     </div>
                     {/* Search Bar */}
-                    <div className="relative w-80">
+                    <div className="relative w-full sm:w-80">
                         <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                         <input
                             type="text"
                             placeholder="Buscar producto..."
-                            className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all shadow-sm"
+                            className="w-full pl-10 pr-4 py-2 sm:py-2.5 bg-white border border-gray-200 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent outline-none transition-all shadow-sm text-sm"
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             autoFocus
@@ -342,8 +343,8 @@ export default function POSPage() {
                                     onClick={() => handleProductClick(product)}
                                     disabled={displayStock <= 0}
                                     className={`group flex flex-col bg-white rounded-xl border transition-all duration-200 overflow-hidden text-left relative ${displayStock <= 0
-                                            ? 'opacity-60 grayscale cursor-not-allowed border-gray-200'
-                                            : 'border-gray-200 hover:border-black hover:shadow-lg hover:-translate-y-1'
+                                        ? 'opacity-60 grayscale cursor-not-allowed border-gray-200'
+                                        : 'border-gray-200 hover:border-black hover:shadow-lg hover:-translate-y-1'
                                         }`}
                                 >
                                     <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
@@ -383,16 +384,44 @@ export default function POSPage() {
                 </div>
             </div>
 
+            {/* Floating Cart Button for Mobile */}
+            <button
+                onClick={() => setIsCartOpen(true)}
+                className="lg:hidden absolute bottom-6 right-6 z-20 bg-black text-white p-4 rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105"
+            >
+                <div className="relative">
+                    <ShoppingCart className="w-6 h-6" />
+                    {cart.reduce((Acc, item) => Acc + item.quantity, 0) > 0 && (
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center border-2 border-black">
+                            {cart.reduce((Acc, item) => Acc + item.quantity, 0)}
+                        </span>
+                    )}
+                </div>
+            </button>
+
+            {/* Overlay background on mobile */}
+            {isCartOpen && (
+                <div
+                    className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
+                    onClick={() => setIsCartOpen(false)}
+                />
+            )}
+
             {/* --- RIGHT PANEL: CART --- */}
-            <div className="w-96 bg-white border-l border-gray-200 flex flex-col h-full shadow-2xl z-20">
-                <div className="p-6 border-b border-gray-100 bg-white">
+            <div className={`absolute lg:static top-0 right-0 w-[85%] max-w-sm lg:w-96 bg-white lg:border-l lg:border-gray-200 flex flex-col h-full shadow-2xl z-40 transition-transform duration-300 ease-in-out ${isCartOpen ? 'translate-x-0' : 'translate-x-full lg:translate-x-0'}`}>
+                <div className="p-5 border-b border-gray-100 bg-white">
                     <div className="flex items-center justify-between mb-1">
                         <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
                             <ShoppingCart className="w-5 h-5" /> Orden Actual
                         </h2>
-                        <span className="text-xs font-bold bg-black text-white px-2 py-1 rounded-full">
-                            {cart.reduce((Acc, item) => Acc + item.quantity, 0)} items
-                        </span>
+                        <div className="flex items-center gap-2 text-sm">
+                            <span className="font-bold bg-black text-white px-2 py-1 rounded-full text-xs">
+                                {cart.reduce((Acc, item) => Acc + item.quantity, 0)} items
+                            </span>
+                            <button onClick={() => setIsCartOpen(false)} className="lg:hidden p-1.5 bg-gray-100 rounded-full text-gray-500 hover:text-black">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -454,10 +483,10 @@ export default function POSPage() {
                         onClick={handleCheckout}
                         disabled={cart.length === 0 || processing}
                         className={`w-full py-4 rounded-xl font-bold text-base shadow-lg transition-all transform active:scale-[0.98] ${successMessage
-                                ? 'bg-green-600 text-white shadow-green-200'
-                                : processing || cart.length === 0
-                                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
-                                    : 'bg-black text-white hover:bg-gray-900 shadow-xl shadow-gray-200'
+                            ? 'bg-green-600 text-white shadow-green-200'
+                            : processing || cart.length === 0
+                                ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
+                                : 'bg-black text-white hover:bg-gray-900 shadow-xl shadow-gray-200'
                             }`}
                     >
                         {processing ? 'Procesando...' : successMessage ? successMessage : 'Cobrar Orden'}
@@ -500,8 +529,8 @@ export default function POSPage() {
                                                     key={val}
                                                     onClick={() => setSelectedAttributes(prev => ({ ...prev, [attr.name]: val }))}
                                                     className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${isSelected
-                                                            ? 'bg-black text-white border-black shadow-md'
-                                                            : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                                                        ? 'bg-black text-white border-black shadow-md'
+                                                        : 'bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:bg-gray-50'
                                                         }`}
                                                 >
                                                     {val}

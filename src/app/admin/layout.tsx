@@ -112,16 +112,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </div>
 
                 {/* Mobile Navigation */}
-                <div className="md:hidden border-t border-gray-100">
-                    <nav className="flex items-center justify-around px-4 py-2">
+                <div className="md:hidden border-t border-gray-100 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                    <nav className="flex items-center gap-2 px-4 py-2 min-w-max">
                         {navItems.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors ${isActive(item.href)
-                                    ? 'text-black'
-                                    : 'text-gray-500 hover:text-black'
-                                    }`}
+                                className={`flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap min-w-[72px] ${
+                                    isActive(item.href)
+                                        ? 'text-black bg-gray-50/50'
+                                        : 'text-gray-500 hover:text-black hover:bg-gray-50'
+                                }`}
                             >
                                 {icons[item.icon]}
                                 {item.label}

@@ -51,20 +51,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             if (authUser) {
                 console.log('AuthContext: Sesión activa detectada:', authUser.email);
                 await loadUserProfile(authUser.id);
-
-                // Solo redirige si estamos en una página de auth (ej: recarga con sesión activa)
-                if (window.location.pathname.startsWith('/auth')) {
-                    const { data: profile } = await supabase
-                        .from('profiles')
-                        .select('role')
-                        .eq('id', authUser.id)
-                        .single();
-                    if (profile?.role === 'admin') {
-                        router.push('/admin');
-                    } else {
-                        router.push('/');
-                    }
-                }
             } else {
                 console.log('AuthContext: No hay sesión activa.');
                 setUser(null);

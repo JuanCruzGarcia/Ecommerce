@@ -46,26 +46,19 @@ function LoginForm() {
 
             if (profileError) {
                 console.error('Error fetching profile:', profileError);
-                // Si falla al obtener perfil, permitimos entrar igual (probablemente sea customer)
             }
 
-            // Primero sincronizamos el estado del servidor (cookies de sesión),
-            // luego navegamos. Si refresh() va después de push(), Next.js puede
-            // cancelar la navegación al revalidar la página actual.
-            router.refresh();
-
-            // Pequeño delay para asegurar que el refresh termine antes de navegar
-            await new Promise(resolve => setTimeout(resolve, 100));
-
-            if (profile?.role === 'admin') {
-                router.push('/admin');
-            } else {
-                router.push(redirectUrl);
-            }
+            // Usamos window.location.href en lugar de router.push() + router.refresh().
+            // Esto hace una navegación completa (como F5) que garantiza que el servidor
+            // lea las cookies de sesión recién seteadas por Supabase, evitando
+            // cualquier condición de carrera con el router de Next.js.
+            const destination = profile?.role === 'admin' ? '/admin' : redirectUrl;
+            window.location.href = destination;
+            // No llamamos setLoading(false): el botón permanece en estado cargando
+            // hasta que el browser complete la navegación, lo cual da mejor UX.
 
         } catch (err: any) {
             setError(err.message || 'Ocurrió un error al iniciar sesión');
-        } finally {
             setLoading(false);
         }
     };

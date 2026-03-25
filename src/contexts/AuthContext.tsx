@@ -19,13 +19,13 @@ const AuthContext = createContext<AuthContextType>({
     loading: true,
 });
 
+// Singleton: evita múltiples instancias que generan eventos duplicados
+const supabase = createSupabaseClient();
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<UserProfile | null>(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
-
-    // 👇 instancia del cliente
-    const supabase = createSupabaseClient();
 
     useEffect(() => {
         // Carga el perfil y actualiza el estado. NO hace redirecciones.

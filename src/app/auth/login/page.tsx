@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+
+// Singleton: una sola instancia del cliente para evitar duplicados de eventos
+const supabase = createSupabaseClient();
 
 // Inner component that uses useSearchParams — must be wrapped in Suspense
 function LoginForm() {
@@ -11,11 +14,8 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
     const searchParams = useSearchParams();
     const redirectUrl = searchParams.get('redirect') || '/';
-
-    const supabase = createSupabaseClient();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,27 +35,13 @@ function LoginForm() {
                 throw authError;
             }
 
-            const userId = data.user.id;
-
-            // Buscar el rol en profiles
-            const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('id', userId)
-                .single();
-
-            if (profileError) {
-                console.error('Error fetching profile:', profileError);
-            }
-
-            // Usamos window.location.href en lugar de router.push() + router.refresh().
-            // Esto hace una navegación completa (como F5) que garantiza que el servidor
-            // lea las cookies de sesión recién seteadas por Supabase, evitando
-            // cualquier condición de carrera con el router de Next.js.
-            const destination = profile?.role === 'admin' ? '/admin' : redirectUrl;
-            window.location.href = destination;
-            // No llamamos setLoading(false): el botón permanece en estado cargando
-            // hasta que el browser complete la navegación, lo cual da mejor UX.
+            // La sesión ya está guardada en cookies por Supabase.
+            // Hacemos una navegación completa (hard navigate) al endpoint de redirección
+            // del servidor, que lee el rol desde la DB y decide a dónde ir.
+            // Pasamos 'redirect' como fallback si el usuario no es admin.
+            const encodedRedirect = encodeURIComponent(redirectUrl);
+            window.location.replace(`/auth/redirect?next=${encodedRedirect}`);
+            // El botón permanece en 'cargando' hasta que el browser complete la navegación.
 
         } catch (err: any) {
             setError(err.message || 'Ocurrió un error al iniciar sesión');

@@ -57,7 +57,7 @@ export default async function Home() {
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-8">
               <span className="size-2 rounded-full bg-primary animate-pulse"></span>
-              <span className="text-xs font-bold uppercase tracking-widest text-primary font-display">Nueva Temporada 2024</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-primary font-display">Nueva Pagina</span>
             </div>
             <h1 className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter">
               Descubrí lo <span className="gradient-text">Nuevo</span>

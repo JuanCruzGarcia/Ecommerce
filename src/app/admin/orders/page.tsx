@@ -11,6 +11,8 @@ type Order = {
     created_at: string;
     total_amount: number;
     status: string;
+    payment_method: 'mercadopago' | 'transferencia' | 'efectivo' | null;
+    payment_status: 'pending' | 'paid';
     shipping_name: string;
     user: {
         email: string;
@@ -31,6 +33,12 @@ const statusLabels: Record<string, string> = {
     shipped: 'Enviado',
     delivered: 'Entregado',
     cancelled: 'Cancelado',
+};
+
+const paymentMethodInfo: Record<string, { label: string; icon: string }> = {
+    transferencia: { label: 'Transferencia', icon: '🏦' },
+    efectivo:      { label: 'Efectivo',       icon: '💵' },
+    mercadopago:   { label: 'MercadoPago',    icon: '💳' },
 };
 
 export default function AdminOrdersPage() {
@@ -81,6 +89,7 @@ export default function AdminOrdersPage() {
                                 <th className="p-4 font-medium text-gray-500">Cliente</th>
                                 <th className="p-4 font-medium text-gray-500">Fecha</th>
                                 <th className="p-4 font-medium text-gray-500">Estado</th>
+                                <th className="p-4 font-medium text-gray-500">Pago</th>
                                 <th className="p-4 font-medium text-gray-500 text-right">Total</th>
                                 <th className="p-4 font-medium text-gray-500"></th>
                             </tr>
@@ -102,6 +111,26 @@ export default function AdminOrdersPage() {
                                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusColors[order.status] || 'bg-gray-100'}`}>
                                             {statusLabels[order.status] || order.status}
                                         </span>
+                                    </td>
+                                    {/* Columna Pago */}
+                                    <td className="p-4">
+                                        {order.payment_method ? (
+                                            <div className="flex flex-col gap-1">
+                                                <span className="text-xs text-gray-500">
+                                                    {paymentMethodInfo[order.payment_method]?.icon}{' '}
+                                                    {paymentMethodInfo[order.payment_method]?.label}
+                                                </span>
+                                                <span className={`inline-flex w-fit px-2 py-0.5 rounded-full text-xs font-medium ${
+                                                    order.payment_status === 'paid'
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : 'bg-yellow-100 text-yellow-800'
+                                                }`}>
+                                                    {order.payment_status === 'paid' ? '✅ Pagado' : '⏳ Sin cobrar'}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <span className="text-xs text-gray-400">—</span>
+                                        )}
                                     </td>
                                     <td className="p-4 font-bold text-gray-900 text-right">
                                         ${order.total_amount.toLocaleString()}

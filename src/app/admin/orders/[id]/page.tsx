@@ -20,6 +20,8 @@ type Order = {
     created_at: string;
     total_amount: number;
     status: string;
+    payment_method: 'mercadopago' | 'transferencia' | 'efectivo' | null;
+    payment_status: 'pending' | 'paid';
     shipping_name: string;
     shipping_address: string;
     shipping_phone: string;
@@ -37,6 +39,17 @@ const statusOptions = [
     { value: 'delivered', label: 'Entregado' },
     { value: 'cancelled', label: 'Cancelado' },
 ];
+
+const paymentStatusOptions = [
+    { value: 'pending', label: 'Sin cobrar', icon: '⏳' },
+    { value: 'paid',    label: 'Pagado',     icon: '✅' },
+];
+
+const paymentMethodLabels: Record<string, { label: string; icon: string }> = {
+    transferencia: { label: 'Transferencia bancaria', icon: '🏦' },
+    efectivo:      { label: 'Efectivo',               icon: '💵' },
+    mercadopago:   { label: 'MercadoPago',            icon: '💳' },
+};
 
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ id: string }> }) {
@@ -87,6 +100,22 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
             alert(`Error al actualizar estado: ${error.message}`);
         } else {
             setOrder((prev) => prev ? { ...prev, status: newStatus } : null);
+        }
+        setUpdating(false);
+    };
+
+    const updatePaymentStatus = async (newPaymentStatus: 'pending' | 'paid') => {
+        setUpdating(true);
+        const { error } = await supabase
+            .from('orders')
+            .update({ payment_status: newPaymentStatus })
+            .eq('id', id);
+
+        if (error) {
+            console.error('Error updating payment status:', error);
+            alert(`Error al actualizar estado de pago: ${error.message}`);
+        } else {
+            setOrder((prev) => prev ? { ...prev, payment_status: newPaymentStatus } : null);
         }
         setUpdating(false);
     };
@@ -171,6 +200,8 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
 
                 {/* Columna Derecha: Acciones */}
                 <div className="space-y-6">
+
+                    {/* Estado del Pedido */}
                     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
                         <h2 className="font-semibold text-gray-900 mb-4">Estado del Pedido</h2>
                         <div className="space-y-3">
@@ -179,10 +210,11 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                                     key={option.value}
                                     onClick={() => updateStatus(option.value)}
                                     disabled={updating}
-                                    className={`w-full text-left px-4 py-3 rounded-lg border transition-all flex justify-between items-center ${order.status === option.value
-                                        ? 'border-black bg-gray-900 text-white shadow-md'
-                                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
-                                        }`}
+                                    className={`w-full text-left px-4 py-3 rounded-lg border transition-all flex justify-between items-center ${
+                                        order.status === option.value
+                                            ? 'border-black bg-gray-900 text-white shadow-md'
+                                            : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
+                                    }`}
                                 >
                                     <span className="font-medium">{option.label}</span>
                                     {order.status === option.value && (
@@ -194,6 +226,67 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ id: str
                             ))}
                         </div>
                     </div>
+
+                    {/* Estado de Pago — solo para pedidos offline */}
+                    {(order.payment_method === 'transferencia' || order.payment_method === 'efectivo') && (
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 className="font-semibold text-gray-900 mb-1">Estado de Pago</h2>
+
+                            {/* Método de pago */}
+                            {order.payment_method && (
+                                <p className="text-sm text-gray-500 mb-4 flex items-center gap-1">
+                                    <span>{paymentMethodLabels[order.payment_method]?.icon}</span>
+                                    <span>{paymentMethodLabels[order.payment_method]?.label}</span>
+                                </p>
+                            )}
+
+                            <div className="space-y-3">
+                                {paymentStatusOptions.map((option) => (
+                                    <button
+                                        key={option.value}
+                                        onClick={() => updatePaymentStatus(option.value as 'pending' | 'paid')}
+                                        disabled={updating}
+                                        className={`w-full text-left px-4 py-3 rounded-lg border transition-all flex justify-between items-center ${
+                                            order.payment_status === option.value
+                                                ? 'border-black bg-gray-900 text-white shadow-md'
+                                                : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50 text-gray-700'
+                                        }`}
+                                    >
+                                        <span className="font-medium flex items-center gap-2">
+                                            <span>{option.icon}</span>
+                                            <span>{option.label}</span>
+                                        </span>
+                                        {order.payment_status === option.value && (
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Pago MercadoPago — solo informativo */}
+                    {order.payment_method === 'mercadopago' && (
+                        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h2 className="font-semibold text-gray-900 mb-1">Estado de Pago</h2>
+                            <p className="text-sm text-gray-500 mb-3 flex items-center gap-1">
+                                <span>💳</span><span>MercadoPago</span>
+                            </p>
+                            <div className={`px-4 py-3 rounded-lg border flex items-center gap-2 ${
+                                order.payment_status === 'paid'
+                                    ? 'border-green-200 bg-green-50 text-green-800'
+                                    : 'border-yellow-200 bg-yellow-50 text-yellow-800'
+                            }`}>
+                                <span>{order.payment_status === 'paid' ? '✅' : '⏳'}</span>
+                                <span className="font-medium text-sm">
+                                    {order.payment_status === 'paid' ? 'Pago confirmado por MP' : 'Pendiente de confirmación MP'}
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
                 </div>
             </div>
         </div>

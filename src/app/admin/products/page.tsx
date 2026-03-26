@@ -11,6 +11,7 @@ type Product = {
     price: number;
     stock: number;
     active: boolean;
+    is_featured: boolean;
     image_url: string | null;
     categories: {
         name: string;
@@ -35,6 +36,7 @@ export default function AdminProductsPage() {
                     price,
                     stock,
                     active,
+                    is_featured,
                     image_url,
                     category_id,
                     categories!category_id (
@@ -48,6 +50,22 @@ export default function AdminProductsPage() {
 
         fetchProducts();
     }, []);
+
+    const toggleFeatured = async (id: string, currentStatus: boolean) => {
+        // Optimistic update
+        setProducts(products.map(p => p.id === id ? { ...p, is_featured: !currentStatus } : p));
+        
+        const { error } = await supabase
+            .from('products')
+            .update({ is_featured: !currentStatus })
+            .eq('id', id);
+
+        if (error) {
+            // Revert on error
+            setProducts(products.map(p => p.id === id ? { ...p, is_featured: currentStatus } : p));
+            alert('Error al actualizar destacado: ' + error.message);
+        }
+    };
 
     const filteredProducts = products.filter(p =>
         p.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -139,6 +157,9 @@ export default function AdminProductsPage() {
                                     <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Estado
                                     </th>
+                                    <th className="text-center px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                        Destacado
+                                    </th>
                                     <th className="text-right px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
                                         Acciones
                                     </th>
@@ -218,6 +239,19 @@ export default function AdminProductsPage() {
                                                     }`}></span>
                                                 {product.active ? 'Activo' : 'Inactivo'}
                                             </span>
+                                        </td>
+
+                                        {/* Destacado */}
+                                        <td className="px-6 py-4 text-center">
+                                            <button 
+                                                onClick={() => toggleFeatured(product.id, product.is_featured)}
+                                                className={`p-1.5 rounded-full transition-colors ${product.is_featured ? 'text-yellow-500 hover:bg-yellow-50' : 'text-gray-300 hover:text-yellow-500 hover:bg-gray-50'}`}
+                                                title={product.is_featured ? "Quitar de destacados" : "Destacar producto"}
+                                            >
+                                                <svg className="w-5 h-5" fill={product.is_featured ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                                </svg>
+                                            </button>
                                         </td>
 
                                         {/* Acciones */}

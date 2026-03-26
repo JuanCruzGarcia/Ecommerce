@@ -14,6 +14,7 @@ type Product = {
   categories: {
     name: string;
   }[] | null;
+  is_featured: boolean;
 };
 
 export default async function Home() {
@@ -33,9 +34,11 @@ export default async function Home() {
       active,
       categories (
         name
-      )
+      ),
+      is_featured
     `)
     .eq('active', true)
+    .eq('is_featured', true)
     .order('created_at', { ascending: false });
 
   // Obtener categorías
@@ -57,13 +60,13 @@ export default async function Home() {
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-8">
               <span className="size-2 rounded-full bg-primary animate-pulse"></span>
-              <span className="text-xs font-bold uppercase tracking-widest text-primary font-display">Nueva Pagina</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-primary font-display">Colección Exclusiva</span>
             </div>
             <h1 className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter">
-              Descubrí lo <span className="gradient-text">Nuevo</span>
+              Nuestros <span className="gradient-text">Destacados</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-              Descubrí todo lo que necesitás en un solo lugar, con variedad y calidad para tu día a día.
+              Explorá la selección especial que hemos preparado con los mejores productos para tu día a día.
             </p>
           </div>
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
@@ -73,6 +76,10 @@ export default async function Home() {
 
         {/* CATEGORIES SECTION */}
         <section className="max-w-7xl mx-auto px-6 py-12">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-4">Productos Destacados</h2>
+            <p className="text-slate-500 font-medium">La mejor selección que tenemos para ofrecerte.</p>
+          </div>
           <CategoryFilterGrid
             products={(products as Product[]) || []}
             categories={categories || []}

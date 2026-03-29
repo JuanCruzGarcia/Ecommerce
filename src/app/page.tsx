@@ -14,6 +14,7 @@ type Product = {
   categories: {
     name: string;
   }[] | null;
+  is_featured: boolean;
 };
 
 export default async function Home() {
@@ -33,9 +34,11 @@ export default async function Home() {
       active,
       categories (
         name
-      )
+      ),
+      is_featured
     `)
     .eq('active', true)
+    .eq('is_featured', true)
     .order('created_at', { ascending: false });
 
   // Obtener categorías
@@ -53,17 +56,16 @@ export default async function Home() {
           <div className="absolute inset-0 hero-gradient z-0"></div>
           <div className="absolute -top-40 -right-40 size-[600px] bg-primary/20 blur-[120px] rounded-full"></div>
           <div className="absolute -bottom-40 -left-40 size-[600px] bg-secondary/10 blur-[120px] rounded-full"></div>
-
           <div className="relative z-10 text-center px-6 max-w-4xl mx-auto">
             <div className="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-1.5 rounded-full mb-8">
               <span className="size-2 rounded-full bg-primary animate-pulse"></span>
-              <span className="text-xs font-bold uppercase tracking-widest text-primary font-display">Nueva Temporada 2024</span>
+              <span className="text-xs font-bold uppercase tracking-widest text-primary font-display">Nueva Pagina</span>
             </div>
             <h1 className="text-6xl md:text-8xl font-black mb-8 leading-[1.1] tracking-tighter">
               Descubrí lo <span className="gradient-text">Nuevo</span>
             </h1>
             <p className="text-lg md:text-xl text-slate-500 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
-              Explora la colección premium con diseños exclusivos que fusionan el estilo urbano con la máxima elegancia.
+              Descubrí todo lo que necesitás en un solo lugar, con variedad y calidad para tu día a día.
             </p>
           </div>
           <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce hidden md:block">
@@ -73,6 +75,10 @@ export default async function Home() {
 
         {/* CATEGORIES SECTION */}
         <section className="max-w-7xl mx-auto px-6 py-12">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight text-slate-900 mb-4">Productos Destacados</h2>
+            <p className="text-slate-500 font-medium">La mejor selección que tenemos para ofrecerte.</p>
+          </div>
           <CategoryFilterGrid
             products={(products as Product[]) || []}
             categories={categories || []}

@@ -1,9 +1,12 @@
 'use client';
 
 import { useState, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
 import Link from 'next/link';
+
+// Singleton: una sola instancia del cliente para evitar duplicados de eventos
+const supabase = createSupabaseClient();
 
 // Inner component that uses useSearchParams — must be wrapped in Suspense
 function LoginForm() {
@@ -11,11 +14,8 @@ function LoginForm() {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const router = useRouter();
     const searchParams = useSearchParams();
     const redirectUrl = searchParams.get('redirect') || '/';
-
-    const supabase = createSupabaseClient();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -35,31 +35,19 @@ function LoginForm() {
                 throw authError;
             }
 
-            const userId = data.user.id;
+            console.log('Login form: signInWithPassword success', data.user?.email);
 
-            // Buscar el rol en profiles
-            const { data: profile, error: profileError } = await supabase
-                .from('profiles')
-                .select('role')
-                .eq('id', userId)
-                .single();
-
-            if (profileError) {
-                console.error('Error fetching profile:', profileError);
-                // Si falla al obtener perfil, permitimos entrar igual (probablemente sea customer)
-            }
-
-            if (profile?.role === 'admin') {
-                router.push('/admin');
-            } else {
-                router.push(redirectUrl);
-            }
-
-            router.refresh();
+            // La sesión ya está guardada en cookies por Supabase.
+            // Redirigimos al servidor para que él verifique el rol seguro y decida a dónde ir.
+            const encodedRedirect = encodeURIComponent(redirectUrl);
+            const target = `/auth/redirect?next=${encodedRedirect}`;
+            
+            console.log('Login form: Redirigiendo a', target);
+            window.location.replace(target);
+            // El botón permanece en 'cargando' hasta que el browser complete la navegación.
 
         } catch (err: any) {
             setError(err.message || 'Ocurrió un error al iniciar sesión');
-        } finally {
             setLoading(false);
         }
     };

@@ -23,6 +23,7 @@ export default function CheckoutPage() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isProcessingMercadoPago, setIsProcessingMercadoPago] = useState(false);
     const [stockError, setStockError] = useState<string | null>(null);
+    const [offlinePaymentMethod, setOfflinePaymentMethod] = useState<'transferencia' | 'efectivo'>('transferencia');
 
     useEffect(() => {
         if (!authLoading && !user) {
@@ -127,6 +128,8 @@ export default function CheckoutPage() {
                     shipping_address: formData.address,
                     shipping_phone: formData.phone,
                     notes: formData.notes,
+                    payment_method: offlinePaymentMethod,  // 'transferencia' | 'efectivo'
+                    payment_status: 'pending',             // pendiente de cobro hasta que el admin confirme
                 })
                 .select()
                 .single();
@@ -179,7 +182,8 @@ export default function CheckoutPage() {
 
             // 5. LIMPIAR CARRITO Y REDIRIGIR
             clearCart();
-            alert('¡Pedido confirmado! Gracias por tu compra.\n\nTu pedido ha sido procesado y el inventario actualizado.');
+            const paymentMethodLabel = offlinePaymentMethod === 'transferencia' ? 'transferencia bancaria' : 'efectivo';
+            alert(`¡Pedido confirmado! Gracias por tu compra.\n\nMétodo de pago: ${paymentMethodLabel}\nUn administrador verificará tu pago y actualizará el estado del pedido.`);
             router.push('/');
 
         } catch (error: any) {
@@ -383,16 +387,92 @@ export default function CheckoutPage() {
                                     <div className="flex-1 border-t border-gray-300"></div>
                                 </div>
 
+                                {/* Selector de método de pago offline */}
+                                <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
+                                    <p className="text-sm font-semibold text-gray-700 mb-3">Método de pago offline:</p>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {/* Opción: Transferencia */}
+                                        <label
+                                            className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${offlinePaymentMethod === 'transferencia'
+                                                    ? 'border-gray-900 bg-white shadow-sm'
+                                                    : 'border-gray-200 hover:border-gray-300 bg-white'
+                                                }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="offlinePaymentMethod"
+                                                value="transferencia"
+                                                checked={offlinePaymentMethod === 'transferencia'}
+                                                onChange={() => setOfflinePaymentMethod('transferencia')}
+                                                className="sr-only"
+                                            />
+                                            <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${offlinePaymentMethod === 'transferencia' ? 'border-gray-900' : 'border-gray-300'
+                                                }`}>
+                                                {offlinePaymentMethod === 'transferencia' && (
+                                                    <div className="w-2 h-2 rounded-full bg-gray-900"></div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <span className="text-xl">🏦</span>
+                                                <p className="text-sm font-medium text-gray-800 leading-tight">Transferencia</p>
+                                            </div>
+                                        </label>
+
+                                        {/* Opción: Efectivo */}
+                                        <label
+                                            className={`flex items-center gap-3 p-3 rounded-lg border-2 cursor-pointer transition-all ${offlinePaymentMethod === 'efectivo'
+                                                    ? 'border-gray-900 bg-white shadow-sm'
+                                                    : 'border-gray-200 hover:border-gray-300 bg-white'
+                                                }`}
+                                        >
+                                            <input
+                                                type="radio"
+                                                name="offlinePaymentMethod"
+                                                value="efectivo"
+                                                checked={offlinePaymentMethod === 'efectivo'}
+                                                onChange={() => setOfflinePaymentMethod('efectivo')}
+                                                className="sr-only"
+                                            />
+                                            <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 flex items-center justify-center ${offlinePaymentMethod === 'efectivo' ? 'border-gray-900' : 'border-gray-300'
+                                                }`}>
+                                                {offlinePaymentMethod === 'efectivo' && (
+                                                    <div className="w-2 h-2 rounded-full bg-gray-900"></div>
+                                                )}
+                                            </div>
+                                            <div>
+                                                <span className="text-xl">💵</span>
+                                                <p className="text-sm font-medium text-gray-800 leading-tight">Efectivo</p>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    {/* Nota según método elegido */}
+                                    {offlinePaymentMethod === 'transferencia' ? (
+                                        <p className="text-xs text-gray-500 mt-3 flex items-start gap-1">
+                                            <span>ℹ️</span>
+                                            <span>Nos pondremos en contacto y te enviaremos los datos para realizar la transferencia.</span>
+                                        </p>
+                                    ) : (
+                                        <p className="text-xs text-gray-500 mt-3 flex items-start gap-1">
+                                            <span>ℹ️</span>
+                                            <span>Coordiná el pago en efectivo al momento de la entrega o retiro del pedido.</span>
+                                        </p>
+                                    )}
+                                </div>
+
                                 {/* Botón de pago offline (secundario) */}
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-gray-800 text-white py-4 rounded-lg font-bold text-lg hover:bg-gray-900 transition-colors shadow-lg disabled:opacity-50"
+                                    className="w-full bg-gray-800 text-white py-4 rounded-lg font-bold text-lg hover:bg-gray-900 transition-colors shadow-lg disabled:opacity-50 mt-1"
                                 >
-                                    {isSubmitting ? 'Procesando...' : 'Confirmar Pedido (Pago Offline)'}
+                                    {isSubmitting
+                                        ? 'Procesando...'
+                                        : `Confirmar Pedido — ${offlinePaymentMethod === 'transferencia' ? 'Transferencia' : 'Efectivo'}`
+                                    }
                                 </button>
 
-                                {/* Nota informativa */}
+                                {/* Nota informativa MercadoPago */}
                                 <p className="text-xs text-gray-500 text-center mt-3">
                                     💡 Con MercadoPago puedes pagar con tarjeta, transferencia o efectivo
                                 </p>

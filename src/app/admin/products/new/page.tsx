@@ -3,6 +3,7 @@
 import { useState, useEffect, ChangeEvent, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createSupabaseClient } from '@/lib/supabase/client';
+import { useR2Upload } from '@/lib/r2/useUpload';
 import {
     ArrowLeft,
     Save,
@@ -22,6 +23,7 @@ import {
 export default function NewProductPage() {
     const supabase = createSupabaseClient();
     const router = useRouter();
+    const { uploadImage: uploadToR2, uploading: r2Uploading } = useR2Upload();
 
     // Estados del formulario
     const [name, setName] = useState('');
@@ -59,7 +61,8 @@ export default function NewProductPage() {
     // Matriz de combinaciones generadas
     const [combinations, setCombinations] = useState<VariantCombination[]>([]);
 
-    const [uploading, setUploading] = useState(false);
+    const [saving, setSaving] = useState(false);
+    const uploading = saving || r2Uploading;
 
     // Refs
     const mainImageInputRef = useRef<HTMLInputElement>(null);
@@ -180,16 +183,9 @@ export default function NewProductPage() {
         setVariants(prev => prev.filter((_, i) => i !== index));
     };
 
-    const uploadImage = async (file: File): Promise<string | null> => {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substr(2, 9)}.${fileExt}`;
-        const { error } = await supabase.storage.from('products').upload(fileName, file);
-        if (error) {
-            console.error('Error uploading image:', error);
-            return null;
-        }
-        const { data } = supabase.storage.from('products').getPublicUrl(fileName);
-        return data.publicUrl;
+    const uploadImage = async (file: File, folder = 'products'): Promise<string | null> => {
+        const result = await uploadToR2(file, folder);
+        return result?.url ?? null;
     };
 
     const handleCreate = async () => {
@@ -203,7 +199,7 @@ export default function NewProductPage() {
             return;
         }
 
-        setUploading(true);
+        setSaving(true);
 
         try {
             let imageUrl = null;
@@ -261,7 +257,7 @@ export default function NewProductPage() {
             console.error('Error:', err);
             alert('Error al crear el producto: ' + (err.message || 'Error desconocido'));
         } finally {
-            setUploading(false);
+            setSaving(false);
         }
     };
 
